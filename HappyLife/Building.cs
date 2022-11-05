@@ -1,17 +1,25 @@
 ﻿using Config;
+using Config.Common;
 using GameData.Common;
 using GameData.Domains;
 using GameData.Domains.Building;
+using GameData.Domains.Character;
+using GameData.Domains.Character.Creation;
 using GameData.Domains.Global;
+using GameData.Domains.Map;
 using GameData.Domains.Organization;
 using GameData.Domains.Taiwu;
 using GameData.Domains.World;
+using GameData.Utilities;
 using HarmonyLib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using TaiwuModdingLib.Core.Utils;
@@ -33,50 +41,118 @@ namespace HappyLife
             }
         }
 
-        [HarmonyPatch(typeof(WorldDomain), "PreAdvanceMonth")]
-        public class PreAdvanceMonthPatch
+        //[HarmonyPatch(typeof(WorldDomain), "PreAdvanceMonth")]
+        //public class PreAdvanceMonthPatch
+        //{
+        //    public unsafe static void Postfix(DataContext context)
+        //    {
+        //        if (GetIntSettings("ImproveSkillWithWorkPossibility") == 0)
+        //            return;
+        //        var workItems = DomainManager.Taiwu.GetType().GetField("_villagerWork", BindingFlags.Instance | BindingFlags.NonPublic)
+        //            .GetValue(DomainManager.Taiwu) as Dictionary<int, VillagerWorkData>;
+
+        //        var random = new Random();
+
+        //        foreach (var workItem in workItems)
+        //        {
+        //            var workItemData = workItem.Value;
+        //            var buildingTemplate = BuildingBlock.Instance[workItemData.BlockTemplateId];
+        //            if (buildingTemplate.RequireLifeSkillType != -1)
+        //            {
+        //                if (random.Next(0, 100) < GetIntSettings("ImproveSkillWithWorkPossibility"))
+        //                {
+        //                    var character =  DomainManager.Character.GetElement_Objects(workItemData.CharacterId);
+        //                    var lifeSkills = character.GetBaseLifeSkillQualifications();
+
+        //                    if (GetIntSettings("ImproveSkillWithWorkLimited") == 0 || lifeSkills.Items[buildingTemplate.RequireLifeSkillType] <= GetIntSettings("ImproveSkillWithWorkLimited"))
+        //                    {
+        //                        lifeSkills.Items[buildingTemplate.RequireLifeSkillType] = 120;
+        //                        character.SetBaseLifeSkillQualifications(ref lifeSkills, context);
+        //                    }
+        //                }
+        //            }
+        //            if (buildingTemplate.RequireCombatSkillType != -1)
+        //            {
+        //                if (random.Next(0, 100) < GetIntSettings("ImproveSkillWithWorkPossibility"))
+        //                {
+        //                    var character = DomainManager.Character.GetElement_Objects(workItemData.CharacterId);
+        //                    var combatSkills = character.GetBaseCombatSkillQualifications();
+
+        //                    var newData = new short[14];
+        //                    for (var index = 0; index < 14; index++)
+        //                    {
+        //                        newData[index] = combatSkills.Items[index];
+        //                    }
+
+        //                    var skillId = random.Next(0, 14);
+        //                    newData[skillId] = (short)(newData[skillId] + 1);
+        //                    var newCombatSkill = new CombatSkillShorts(newData);
+        //                    if (GetIntSettings("ImproveSkillWithWorkLimited") == 0 || newData[skillId] <= GetIntSettings("ImproveSkillWithWorkLimited"))
+        //                    {
+        //                        character.SetBaseCombatSkillQualifications(ref newCombatSkill, context);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        [HarmonyPatch(typeof(BuildingDomain), "ParallelUpdate")]
+        public class ParallelUpdatePatch
         {
-            public unsafe static void Postfix(DataContext context)
+            public unsafe static bool Prefix(BuildingDomain __instance, DataContext context)
             {
                 if (GetIntSettings("ImproveSkillWithWorkPossibility") == 0)
-                    return;
-                var workItems = DomainManager.Building.GetType().GetField("_villagerWork", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .GetValue(DomainManager.Building) as Dictionary<int, VillagerWorkData>;
+                    return true;
 
+                var shopManagerDict = __instance.GetType().GetField("_shopManagerDict", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .GetValue(__instance) as Dictionary<BuildingBlockKey, CharacterList>;
                 var random = new Random();
-
-                foreach (var workItem in workItems)
+                foreach (var dataPair in shopManagerDict)
                 {
-                    var workItemData = workItem.Value;
-                    var buildingTemplate = BuildingBlock.Instance[workItemData.BlockTemplateId];
-                    if(buildingTemplate.RequireLifeSkillType != -1)
+                    List<int> charList = dataPair.Value.GetCollection();
+                    var configData = DomainManager.Building.GetBuildingBlockData(dataPair.Key);
+
+                    foreach (var characterId in charList)
                     {
-                        if(random.Next(0, 100) < GetIntSettings("ImproveSkillWithWorkPossibility"))
+                        if (DomainManager.Character.TryGetElement_Objects(characterId, out GameData.Domains.Character.Character character))
                         {
-                            var character = DomainManager.Character.GetElement_Objects(workItemData.CharacterId);
-                            var lifeSkills = character.GetBaseLifeSkillQualifications();
-                            if (GetIntSettings("ImproveSkillWithWorkLimited") == 0 || lifeSkills.Items[buildingTemplate.RequireLifeSkillType] <= GetIntSettings("ImproveSkillWithWorkLimited"))
+                            if (BuildingBlock.Instance.Count <= configData.TemplateId || configData.TemplateId < 0)
+                                continue;
+                            var buildingTemplate = BuildingBlock.Instance[configData.TemplateId];
+                            if (buildingTemplate.RequireLifeSkillType != -1)
                             {
-                                lifeSkills.Items[buildingTemplate.RequireLifeSkillType]++;
-                                character.SetBaseLifeSkillQualifications(ref lifeSkills, context);
+                                if (random.Next(0, 100) < GetIntSettings("ImproveSkillWithWorkPossibility"))
+                                {
+                                    var lifeSkills = character.GetBaseLifeSkillQualifications();
+
+
+                                    if (lifeSkills.Items[buildingTemplate.RequireLifeSkillType] <= GetIntSettings("ImproveSkillWithWorkLimited"))
+                                    {
+                                        lifeSkills.Items[buildingTemplate.RequireLifeSkillType] += 1;
+                                        character.SetBaseLifeSkillQualifications(ref lifeSkills, context);
+                                    }
+                                }
                             }
-                        }
-                    }
-                    if (buildingTemplate.RequireCombatSkillType != -1)
-                    {
-                        if (random.Next(0, 100) < GetIntSettings("ImproveSkillWithWorkPossibility"))
-                        {
-                            var character = DomainManager.Character.GetElement_Objects(workItemData.CharacterId);
-                            var combatSkills = character.GetBaseCombatSkillQualifications();
-                            var skillId = random.Next(0, 13);
-                            combatSkills.Items[skillId]++;
-                            if (GetIntSettings("ImproveSkillWithWorkLimited") == 0 || combatSkills.Items[skillId] <= GetIntSettings("ImproveSkillWithWorkLimited"))
+                            if (buildingTemplate.RequireCombatSkillType != -1)
                             {
-                                character.SetBaseCombatSkillQualifications(ref combatSkills, context);
+                                if (random.Next(0, 100) < GetIntSettings("ImproveSkillWithWorkPossibility"))
+                                {
+                                    var combatSkills = character.GetBaseCombatSkillQualifications();
+
+
+                                    var skillId = random.Next(0, 14);
+                                    if (combatSkills.Items[skillId] <= GetIntSettings("ImproveSkillWithWorkLimited"))
+                                    {
+                                        combatSkills.Items[skillId] += 1;
+                                        character.SetBaseCombatSkillQualifications(ref combatSkills, context);
+                                    }
+                                }
                             }
                         }
                     }
                 }
+                return true;
             }
         }
 
@@ -84,32 +160,69 @@ namespace HappyLife
         [HarmonyPatch(typeof(OrganizationDomain), nameof(OrganizationDomain.GetCharacterTemplateId))]
         public class GetCharacterTemplateIdPatch
         {
-            public unsafe static bool Prefix(ref sbyte gender)
+            public unsafe static bool Prefix(ref sbyte gender, sbyte orgTemplateId)
             {
-                if (GetIntSettings("VillagerRecrultSex") == 0)
+                if (GetIntSettings("WorldCreatePeopleSex") != 0)
+                {
+                    gender = GetIntSettings("WorldCreatePeopleSex") == 1 ? (sbyte)1 : (sbyte)0;
+                }
+                if (GetIntSettings("VillagerRecrultSex") != 0)
+                {
+                    var stack = new StackTrace();
+                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
+                        gender = GetIntSettings("VillagerRecrultSex") == 1 ? (sbyte)1 : (sbyte)0;
+                }
+                return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(GameData.Domains.Character.Character), "OfflineCreateIntelligentCharacter")]
+        public class OfflineCreateIntelligentCharacterPatch
+        {
+            public static int MaxAvatarRetryTimes = 10;
+            public static bool Prefix(ref GameData.Domains.Character.Character __instance, DataContext context, ref IntelligentCharacterCreationInfo info)
+            {
+                if (GetIntSettings("VillagerRecrultAppearanceLowerLimit") == 0)
                     return true;
                 else
                 {
-                    gender = GetIntSettings("VillagerRecrultSex") == 1 ? (sbyte)1 : (sbyte)0;
+                    var stack = new StackTrace();
+                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
+                        info.BaseAttraction = (short)(200 + GetIntSettings("VillagerRecrultAppearanceLowerLimit") * 100);
                     return true;
-                    //var constants = typeof(Character.DefKey).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-                    //foreach (var constant in constants)
-                    //{
-                    //    var name = constant.Name;
-                    //    var value = constant.GetValue(null);
-                    //    if(name == GetStringSettings("VillagerRecrultTemplate") && Character.Instance[(short)value].CreatingType == 1)
-                    //    {
-                    //        __result = (short)value;
-                    //    }
-                    //}
                 }
-                //foreach(var organization in Organization.Instance)
-                //{
-                //    foreach(var templateId in organization.CharTemplateIds)
-                //    {
-                //        var template = Character.Instance[templateId];
-                //    }
-                //}
+            }
+
+            public static void Postfix(ref GameData.Domains.Character.Character __instance, DataContext context, IntelligentCharacterCreationInfo info)
+            {
+
+                if(GetIntSettings("VillagerRecrultAppearanceLowerLimit")!= 0)
+                {
+                    var stack = new StackTrace();
+                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
+                    {
+                        var retryTimes = 0;
+                        var characterItem = Config.Character.Instance[info.CharTemplateId];
+                        while ((short)(200 + GetIntSettings("VillagerRecrultAppearanceLowerLimit") * 100) > __instance.GetAvatar().BaseCharm && retryTimes < MaxAvatarRetryTimes)
+                        {
+                            __instance.GetType().GetMethod("OfflineCreateAttractionAndAvatar", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { context, characterItem.PresetBodyType, info });
+                            retryTimes++;
+                        }
+                    }
+                }
+
+
+                if (GetIntSettings("VillagerRecrultMorality") == 0)
+                    return;
+                else
+                {
+                    var stack = new StackTrace();
+                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
+                    {
+                        __instance.GetType().GetField("_baseMorality", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(__instance, (short)(200 * GetIntSettings("VillagerRecrultMorality") - 100 - 500));
+                    }
+                    return;
+                }
             }
         }
 
@@ -142,6 +255,10 @@ namespace HappyLife
                 //        _dataArray[index] = buildItem;
                 //    }
                 //}
+                if(GetBoolSettings("RestoreAttainmentPerGrade"))
+                {
+                    GlobalConfig.Instance.AddAttainmentPerGrade = new sbyte[] { 10, 15, 20, 25, 30, 35, 40, 45, 50 };
+                }
 
                 if (!GetBoolSettings("EnableBuildResource"))
                     return;

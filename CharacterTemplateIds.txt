@@ -1,0 +1,917 @@
+ZangFemale = 30;
+
+ZangMale = 31;
+
+MerchantFoods = 32;
+
+MerchantBooks = 33;
+
+MerchantMaterials = 34;
+
+MerchantEquipments = 35;
+
+MerchantMedicines = 36;
+
+MerchantConstructions = 37;
+
+MerchantAccessories = 38;
+
+JuniorMonv = 39;
+
+JuniorDayueYaochang = 40;
+
+JuniorJiuhan = 41;
+
+JuniorJinHuanger = 42;
+
+JuniorYiYihou = 43;
+
+JuniorWeiQi = 44;
+
+JuniorYixiang = 45;
+
+JuniorXuefeng = 46;
+
+JuniorShuFang = 47;
+
+Monv0 = 48;
+
+Monv1 = 49;
+
+Monv2 = 50;
+
+Monv3 = 51;
+
+Monv4 = 52;
+
+Monv5 = 53;
+
+Monv6 = 54;
+
+Monv7 = 55;
+
+Monv8 = 56;
+
+DayueYaochang0 = 57;
+
+DayueYaochang1 = 58;
+
+DayueYaochang2 = 59;
+
+DayueYaochang3 = 60;
+
+DayueYaochang4 = 61;
+
+DayueYaochang5 = 62;
+
+DayueYaochang6 = 63;
+
+DayueYaochang7 = 64;
+
+DayueYaochang8 = 65;
+
+Jiuhan0 = 66;
+
+Jiuhan1 = 67;
+
+Jiuhan2 = 68;
+
+Jiuhan3 = 69;
+
+Jiuhan4 = 70;
+
+Jiuhan5 = 71;
+
+Jiuhan6 = 72;
+
+Jiuhan7 = 73;
+
+Jiuhan8 = 74;
+
+JinHuanger0 = 75;
+
+JinHuanger1 = 76;
+
+JinHuanger2 = 77;
+
+JinHuanger3 = 78;
+
+JinHuanger4 = 79;
+
+JinHuanger5 = 80;
+
+JinHuanger6 = 81;
+
+JinHuanger7 = 82;
+
+JinHuanger8 = 83;
+
+YiYihou0 = 84;
+
+YiYihou1 = 85;
+
+YiYihou2 = 86;
+
+YiYihou3 = 87;
+
+YiYihou4 = 88;
+
+YiYihou5 = 89;
+
+YiYihou6 = 90;
+
+YiYihou7 = 91;
+
+YiYihou8 = 92;
+
+WeiQi0 = 93;
+
+WeiQi1 = 94;
+
+WeiQi2 = 95;
+
+WeiQi3 = 96;
+
+WeiQi4 = 97;
+
+WeiQi5 = 98;
+
+WeiQi6 = 99;
+
+WeiQi7 = 100;
+
+WeiQi8 = 101;
+
+Yixiang0 = 102;
+
+Yixiang1 = 103;
+
+Yixiang2 = 104;
+
+Yixiang3 = 105;
+
+Yixiang4 = 106;
+
+Yixiang5 = 107;
+
+Yixiang6 = 108;
+
+Yixiang7 = 109;
+
+Yixiang8 = 110;
+
+Xuefeng0 = 111;
+
+Xuefeng1 = 112;
+
+Xuefeng2 = 113;
+
+Xuefeng3 = 114;
+
+Xuefeng4 = 115;
+
+Xuefeng5 = 116;
+
+Xuefeng6 = 117;
+
+Xuefeng7 = 118;
+
+Xuefeng8 = 119;
+
+ShuFang0 = 120;
+
+ShuFang1 = 121;
+
+ShuFang2 = 122;
+
+ShuFang3 = 123;
+
+ShuFang4 = 124;
+
+ShuFang5 = 125;
+
+ShuFang6 = 126;
+
+ShuFang7 = 127;
+
+ShuFang8 = 128;
+
+WeakenedMonv0 = 129;
+
+WeakenedMonv1 = 130;
+
+WeakenedMonv2 = 131;
+
+WeakenedMonv3 = 132;
+
+WeakenedMonv4 = 133;
+
+WeakenedMonv5 = 134;
+
+WeakenedMonv6 = 135;
+
+WeakenedMonv7 = 136;
+
+WeakenedMonv8 = 137;
+
+WeakenedDayueYaochang0 = 138;
+
+WeakenedDayueYaochang1 = 139;
+
+WeakenedDayueYaochang2 = 140;
+
+WeakenedDayueYaochang3 = 141;
+
+WeakenedDayueYaochang4 = 142;
+
+WeakenedDayueYaochang5 = 143;
+
+WeakenedDayueYaochang6 = 144;
+
+WeakenedDayueYaochang7 = 145;
+
+WeakenedDayueYaochang8 = 146;
+
+WeakenedJiuhan0 = 147;
+
+WeakenedJiuhan1 = 148;
+
+WeakenedJiuhan2 = 149;
+
+WeakenedJiuhan3 = 150;
+
+WeakenedJiuhan4 = 151;
+
+WeakenedJiuhan5 = 152;
+
+WeakenedJiuhan6 = 153;
+
+WeakenedJiuhan7 = 154;
+
+WeakenedJiuhan8 = 155;
+
+WeakenedJinHuanger0 = 156;
+
+WeakenedJinHuanger1 = 157;
+
+WeakenedJinHuanger2 = 158;
+
+WeakenedJinHuanger3 = 159;
+
+WeakenedJinHuanger4 = 160;
+
+WeakenedJinHuanger5 = 161;
+
+WeakenedJinHuanger6 = 162;
+
+WeakenedJinHuanger7 = 163;
+
+WeakenedJinHuanger8 = 164;
+
+WeakenedYiYihou0 = 165;
+
+WeakenedYiYihou1 = 166;
+
+WeakenedYiYihou2 = 167;
+
+WeakenedYiYihou3 = 168;
+
+WeakenedYiYihou4 = 169;
+
+WeakenedYiYihou5 = 170;
+
+WeakenedYiYihou6 = 171;
+
+WeakenedYiYihou7 = 172;
+
+WeakenedYiYihou8 = 173;
+
+WeakenedWeiQi0 = 174;
+
+WeakenedWeiQi1 = 175;
+
+WeakenedWeiQi2 = 176;
+
+WeakenedWeiQi3 = 177;
+
+WeakenedWeiQi4 = 178;
+
+WeakenedWeiQi5 = 179;
+
+WeakenedWeiQi6 = 180;
+
+WeakenedWeiQi7 = 181;
+
+WeakenedWeiQi8 = 182;
+
+WeakenedYixiang0 = 183;
+
+WeakenedYixiang1 = 184;
+
+WeakenedYixiang2 = 185;
+
+WeakenedYixiang3 = 186;
+
+WeakenedYixiang4 = 187;
+
+WeakenedYixiang5 = 188;
+
+WeakenedYixiang6 = 189;
+
+WeakenedYixiang7 = 190;
+
+WeakenedYixiang8 = 191;
+
+WeakenedXuefeng0 = 192;
+
+WeakenedXuefeng1 = 193;
+
+WeakenedXuefeng2 = 194;
+
+WeakenedXuefeng3 = 195;
+
+WeakenedXuefeng4 = 196;
+
+WeakenedXuefeng5 = 197;
+
+WeakenedXuefeng6 = 198;
+
+WeakenedXuefeng7 = 199;
+
+WeakenedXuefeng8 = 200;
+
+WeakenedShuFang0 = 201;
+
+WeakenedShuFang1 = 202;
+
+WeakenedShuFang2 = 203;
+
+WeakenedShuFang3 = 204;
+
+WeakenedShuFang4 = 205;
+
+WeakenedShuFang5 = 206;
+
+WeakenedShuFang6 = 207;
+
+WeakenedShuFang7 = 208;
+
+WeakenedShuFang8 = 209;
+
+Monkey0 = 210;
+
+Eagle0 = 211;
+
+Pig0 = 212;
+
+Bear0 = 213;
+
+Bull0 = 214;
+
+Snake0 = 215;
+
+Jaguar0 = 216;
+
+Lion0 = 217;
+
+Tiger0 = 218;
+
+Monkey1 = 219;
+
+Eagle1 = 220;
+
+Pig1 = 221;
+
+Bear1 = 222;
+
+Bull1 = 223;
+
+Snake1 = 224;
+
+Jaguar1 = 225;
+
+Lion1 = 226;
+
+Tiger1 = 227;
+
+SickBeggar = 228;
+
+EvilBeggar = 229;
+
+BowlBeggar = 230;
+
+SnakeBeggar = 231;
+
+BossBeggar = 232;
+
+PettyThief = 233;
+
+CommonThief = 234;
+
+RapistThief = 235;
+
+FemaleThief = 236;
+
+BigThief = 237;
+
+LocalThug = 238;
+
+MountainBandit = 239;
+
+EvilBandit = 240;
+
+FierceBandit = 241;
+
+BossBandit = 242;
+
+ShaolinTraitor = 243;
+
+EmeiTraitor = 244;
+
+BaihuaTraitor = 245;
+
+WudangTraitor = 246;
+
+YuanshanTraitor = 247;
+
+ShixiangTraitor = 248;
+
+RanshanTraitor = 249;
+
+XuannvTraitor = 250;
+
+ZhujianTraitor = 251;
+
+KongsangTraitor = 252;
+
+JingangTraitor = 253;
+
+WuxianTraitor = 254;
+
+JieqingTraitor = 255;
+
+FulongTraitor = 256;
+
+XuehouTraitor = 257;
+
+Desperado = 258;
+
+RapistMonk = 259;
+
+DevilishTaoist = 260;
+
+ManEatingGhost = 261;
+
+CrimeCulprit = 262;
+
+FoxyGirl = 263;
+
+DevilishWoman = 264;
+
+PoisonousWidow = 265;
+
+HappyReunionFairy = 266;
+
+FairFaceQueen = 267;
+
+GhostServant = 268;
+
+RefineCorpsePerson = 269;
+
+CorpseClawPerson = 270;
+
+GhostDoctor = 271;
+
+LivingDead = 272;
+
+DevilishMusician = 273;
+
+MystifyingChessPlayer = 274;
+
+BloodCalligrapher = 275;
+
+BadMonkOldMan = 276;
+
+IgnorantWiseMan = 277;
+
+ForeignWeirdo = 278;
+
+PoisonHand = 279;
+
+EvilBachelor = 280;
+
+PureOldBeing = 281;
+
+EvilWayConjointBoss = 282;
+
+LoseHeartChivalrousMan = 283;
+
+EvilSpirit = 284;
+
+LoseSoulPerson = 285;
+
+BloodyWarGhost = 286;
+
+RefineHeartMaster = 287;
+
+MadDemon = 288;
+
+FirePondMale = 289;
+
+ColdPondFemale = 290;
+
+AviciFolk = 291;
+
+SoumoulouLord = 292;
+
+DesperatePerson = 293;
+
+InHumanFolk = 294;
+
+NoAppearanceOldMonk = 295;
+
+NoNameOldTaoist = 296;
+
+WorldWearyOldPerson = 297;
+
+XiangshuMinion0 = 298;
+
+XiangshuMinion1 = 299;
+
+XiangshuMinion2 = 300;
+
+XiangshuMinion3 = 301;
+
+XiangshuMinion4 = 302;
+
+XiangshuMinion5 = 303;
+
+XiangshuMinion6 = 304;
+
+XiangshuMinion7 = 305;
+
+XiangshuMinion8 = 306;
+
+Righteous0 = 307;
+
+Righteous1 = 308;
+
+Righteous2 = 309;
+
+Righteous3 = 310;
+
+Righteous4 = 311;
+
+Righteous5 = 312;
+
+Righteous6 = 313;
+
+Righteous7 = 314;
+
+Righteous8 = 315;
+
+ShaolinRetiredSenior = 316;
+
+ShaolinMember6 = 317;
+
+ShaolinMember5 = 318;
+
+ShaolinMember4 = 319;
+
+ShaolinMember3 = 320;
+
+ShaolinMember2 = 321;
+
+ShaolinMember1 = 322;
+
+ShaolinMember0 = 323;
+
+EmeiRetiredSenior = 324;
+
+EmeiMember6 = 325;
+
+EmeiMember5 = 326;
+
+EmeiMember4 = 327;
+
+EmeiMember3 = 328;
+
+EmeiMember2 = 329;
+
+EmeiMember1 = 330;
+
+EmeiMember0 = 331;
+
+BaihuaRetiredSenior = 332;
+
+BaihuaMember6 = 333;
+
+BaihuaMember5 = 334;
+
+BaihuaMember4 = 335;
+
+BaihuaMember3 = 336;
+
+BaihuaMember2 = 337;
+
+BaihuaMember1 = 338;
+
+BaihuaMember0 = 339;
+
+WudangRetiredSenior = 340;
+
+WudangMember6 = 341;
+
+WudangMember5 = 342;
+
+WudangMember4 = 343;
+
+WudangMember3 = 344;
+
+WudangMember2 = 345;
+
+WudangMember1 = 346;
+
+WudangMember0 = 347;
+
+YuanshanRetiredSenior = 348;
+
+YuanshanMember6 = 349;
+
+YuanshanMember5 = 350;
+
+YuanshanMember4 = 351;
+
+YuanshanMember3 = 352;
+
+YuanshanMember2 = 353;
+
+YuanshanMember1 = 354;
+
+YuanshanMember0 = 355;
+
+ShixiangRetiredSenior = 356;
+
+ShixiangMember6 = 357;
+
+ShixiangMember5 = 358;
+
+ShixiangMember4 = 359;
+
+ShixiangMember3 = 360;
+
+ShixiangMember2 = 361;
+
+ShixiangMember1 = 362;
+
+ShixiangMember0 = 363;
+
+RanshanRetiredSenior = 364;
+
+RanshanMember6 = 365;
+
+RanshanMember5 = 366;
+
+RanshanMember4 = 367;
+
+RanshanMember3 = 368;
+
+RanshanMember2 = 369;
+
+RanshanMember1 = 370;
+
+RanshanMember0 = 371;
+
+XuannvRetiredSenior = 372;
+
+XuannvMember6 = 373;
+
+XuannvMember5 = 374;
+
+XuannvMember4 = 375;
+
+XuannvMember3 = 376;
+
+XuannvMember2 = 377;
+
+XuannvMember1 = 378;
+
+XuannvMember0 = 379;
+
+ZhujianRetiredSenior = 380;
+
+ZhujianMember6 = 381;
+
+ZhujianMember5 = 382;
+
+ZhujianMember4 = 383;
+
+ZhujianMember3 = 384;
+
+ZhujianMember2 = 385;
+
+ZhujianMember1 = 386;
+
+ZhujianMember0 = 387;
+
+KongsangRetiredSenior = 388;
+
+KongsangMember6 = 389;
+
+KongsangMember5 = 390;
+
+KongsangMember4 = 391;
+
+KongsangMember3 = 392;
+
+KongsangMember2 = 393;
+
+KongsangMember1 = 394;
+
+KongsangMember0 = 395;
+
+JingangRetiredSenior = 396;
+
+JingangMember6 = 397;
+
+JingangMember5 = 398;
+
+JingangMember4 = 399;
+
+JingangMember3 = 400;
+
+JingangMember2 = 401;
+
+JingangMember1 = 402;
+
+JingangMember0 = 403;
+
+WuxianRetiredSenior = 404;
+
+WuxianMember6 = 405;
+
+WuxianMember5 = 406;
+
+WuxianMember4 = 407;
+
+WuxianMember3 = 408;
+
+WuxianMember2 = 409;
+
+WuxianMember1 = 410;
+
+WuxianMember0 = 411;
+
+JieqingRetiredSenior = 412;
+
+JieqingMember6 = 413;
+
+JieqingMember5 = 414;
+
+JieqingMember4 = 415;
+
+JieqingMember3 = 416;
+
+JieqingMember2 = 417;
+
+JieqingMember1 = 418;
+
+JieqingMember0 = 419;
+
+FulongRetiredSenior = 420;
+
+FulongMember6 = 421;
+
+FulongMember5 = 422;
+
+FulongMember4 = 423;
+
+FulongMember3 = 424;
+
+FulongMember2 = 425;
+
+FulongMember1 = 426;
+
+FulongMember0 = 427;
+
+XuehouRetiredSenior = 428;
+
+XuehouMember6 = 429;
+
+XuehouMember5 = 430;
+
+XuehouMember4 = 431;
+
+XuehouMember3 = 432;
+
+XuehouMember2 = 433;
+
+XuehouMember1 = 434;
+
+XuehouMember0 = 435;
+
+LittleMonk = 436;
+
+XiangshuCore = 437;
+
+XiangshuImmortal = 438;
+
+BigShadow = 439;
+
+BoundShadow = 440;
+
+Ranchenzi = 441;
+
+PastRanchenzi = 442;
+
+AntagonistRanchenzi = 443;
+
+Huanxin = 444;
+
+TrappedHuanxin = 445;
+
+LongYufu = 446;
+
+ZiWuxiao = 447;
+
+TalkingWoodenMan = 448;
+
+HuanxinIllusion = 449;
+
+ZiWuxiaoSketch = 450;
+
+PastXuXiangong = 451;
+
+OldMonk = 452;
+
+AdoptiveFather = 453;
+
+AdoptiveFatherSketch = 454;
+
+OldWoodenMan = 455;
+
+BambooGloveWoodenMan = 456;
+
+BambooPolearWoodenMan = 457;
+
+BambooHiddenWoodenMan = 458;
+
+KuaEBronzeStatue = 459;
+
+ValleyMaleMonkey = 460;
+
+ValleyFemaleMonkey = 461;
+
+MonkeyKing = 462;
+
+StoryBigWig = 463;
+
+StoryLittleUrchin = 464;
+
+StoryStrongMan = 465;
+
+StoryHuanyue = 466;
+
+OldTaoistPriest = 467;
+
+StoryChuixing = 468;
+
+StoryStrongManSaved = 469;
+
+StoryLittleUrchinParent = 470;
+
+WangliuCarter = 471;
+
+OldWomanFeng = 472;
+
+PostWoman = 473;
+
+ChickenKing = 474;
+
+WesternBeauty = 475;
+
+WesternGirl = 476;
+
+MarriageCuiE = 477;
+
+ManInBlack = 478;
+
+WeakenedMonvImmortal = 479;
+
+WeakenedDayueYaochangImmortal = 480;
+
+WeakenedJiuhanImmortal = 481;
+
+WeakenedJinHuangerImmortal = 482;
+
+WeakenedYiYihouImmortal = 483;
+
+WeakenedWeiQiImmortal = 484;
+
+WeakenedYixiangImmortal = 485;
+
+WeakenedXuefengImmortal = 486;
+
+WeakenedShufangImmortal = 487;
+
+ConchShipMan = 488;

@@ -90,7 +90,7 @@ namespace HappyLife
                 if (DomainManager.Mod.GetSetting(modId.ToString(), field, ref result))
                     return result;
             }
-            return false;
+            return false;   
         }
 
         #endregion
@@ -100,9 +100,9 @@ namespace HappyLife
         {
             public static void Postfix(Character __instance, ref short __result)
             {
-                if (__instance.GetId() == DomainManager.Taiwu.GetTaiwuCharId())
+                if (__instance.GetId() == DomainManager.Taiwu.GetTaiwuCharId() && GetIntSettings("TaiwuRecoverPercent") != 100)
                     __result = (short)(__result * (GetIntSettings("TaiwuRecoverPercent") / 100f));
-                if (__instance.GetId() != DomainManager.Taiwu.GetTaiwuCharId())
+                if (__instance.GetId() != DomainManager.Taiwu.GetTaiwuCharId() && GetIntSettings("EnemyRecoverPercent") != 100)
                     __result = (short)(__result * (GetIntSettings("EnemyRecoverPercent") / 100f));
             }
         }

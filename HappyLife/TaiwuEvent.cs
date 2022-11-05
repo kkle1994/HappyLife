@@ -21,8 +21,20 @@ namespace HappyLife
 {
     public partial class HappyLife
     {
-        [HarmonyPatch(typeof(OptionConditionMatcher), "TeamMateLess")]
-        public class OnOption1AvailableCheckPatch
+        //[HarmonyPatch(typeof(OptionConditionMatcher), "TeamMateLess")]
+        //public class OnOption1AvailableCheckPatch
+        //{
+        //    public static void Postfix(ref bool __result)
+        //    {
+        //        if (GetBoolSettings("UnlimitedGroupMemberCount"))
+        //            __result = true;
+        //    }
+        //}
+
+        
+
+        [HarmonyPatch(typeof(OptionConditionMatcher), "DynamicTeammateCountMax")]
+        public class DynamicTeammateCountMaxPatch
         {
             public static void Postfix(ref bool __result)
             {
@@ -84,7 +96,7 @@ namespace HappyLife
                     item.AvailableCharacters = default(CharacterSet);
                     foreach (int item2 in DomainManager.Taiwu.GetGroupCharIds().GetCollection())
                     {
-                        if (item2 != charId && DomainManager.Character.TryGetElement_Objects(item2, out var element2))
+                        if (item2 != charId && item2 != DomainManager.Taiwu.GetTaiwuCharId() && DomainManager.Character.TryGetElement_Objects(item2, out var element2))
                         {
                             item.AvailableCharacters.Add(item2);
                         }

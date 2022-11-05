@@ -1,9 +1,12 @@
-﻿using Config;
+﻿using BehTree;
+using Config;
 using GameData.Domains;
 using GameData.Domains.Character;
 using GameData.Domains.Character.Ai;
+using GameData.Domains.Character.ParallelModifications;
 using GameData.Domains.Character.Relation;
 using GameData.Domains.Global;
+using GameData.Domains.Map;
 using GameData.Domains.TaiwuEvent.EventHelper;
 using GameData.Utilities;
 using HarmonyLib;
@@ -13,6 +16,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using static GameData.Domains.Character.Ai.AiHelper;
@@ -24,13 +28,23 @@ namespace HappyLife
     {
         public static bool IsTaiwu(this Character character)
         {
-            return character.GetId() == DomainManager.Taiwu.GetTaiwuCharId();
+            return character != null ? character.GetId() == DomainManager.Taiwu.GetTaiwuCharId() : false;
         }
 
         public static bool IsTaiwuVillagers(this Character character)
         {
             var villagersStatus = DomainManager.Taiwu.GetAllVillagersStatus();
-            return villagersStatus.Exists(v => v.CharacterId == character.GetId());
+            return character != null ? villagersStatus.Exists(v => v.CharacterId == character.GetId()) : false;
+        }
+
+        public static T GetValue<T>(this Character character, string fieldName, BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic)
+        {
+            return character != null ? (T)character.GetType().GetField(fieldName, flags).GetValue(character) : default(T);
+        }
+
+        public static void SetValue<T>(this Character character, string fieldName, T value, BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic)
+        {
+            character.GetType().GetField(fieldName, flags).SetValue(character, value);
         }
     }
 
@@ -82,6 +96,12 @@ namespace HappyLife
                         __result = false;
                     }
                 }
+                if(GetBoolSettings("BanTaiwuInfected"))
+                {
+                    if (__instance.IsTaiwu())
+                        __result = false;
+                }
+
 
             }
         }
@@ -153,12 +173,45 @@ namespace HappyLife
         [HarmonyPatch(typeof(Character), "OfflineIncreaseAge")]
         public class OfflineIncreaseAgePatch
         {
-            public static bool Prefix(Character __instance)
+            public static bool Prefix(Character __instance, ref sbyte __state)
             {
+                __state = -1;
                 if (GetBoolSettings("ShopTaiwuAgeIncreasing") && __instance.IsTaiwu())
                     return false;
+                if (GetIntSettings("ChildQuickGrowAge") != 0 && __instance.GetActualAge() <= GetIntSettings("ChildQuickGrowAge") && __instance.IsTaiwuVillagers()
+                    && __instance.GetValue<sbyte>("_birthMonth") != DomainManager.World.GetCurrMonthInYear())
+                {
+                    __state = __instance.GetValue<sbyte>("_birthMonth");
+                    __instance.SetValue<sbyte>("_birthMonth", DomainManager.World.GetCurrMonthInYear());
+                }
                 return true;
             }
+
+            public static void Postfix(Character __instance, ref sbyte __state)
+            {
+                if (__state != -1)
+                    __instance.SetValue<sbyte>("_birthMonth", __state);
+            }
+            //public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, Character __instance)
+            //{
+            //    if (GetIntSettings("ChildQuickGrowAge") != 0 && __instance.GetActualAge() <= GetIntSettings("ChildQuickGrowAge") && __instance.IsTaiwuVillagers())
+            //    {
+            //        var rowIndex = -1;
+
+            //        var codes = new List<CodeInstruction>(instructions);
+            //        for (var i = 0; i < codes.Count; i++)
+            //        {
+            //            if (codes[i].opcode == OpCodes.Brfalse)
+            //            {
+            //                codes[rowIndex].opcode = OpCodes.Nop;
+            //            }
+            //        }
+
+            //        return codes.AsEnumerable();
+            //    }
+
+            //    return instructions;
+            //}
         }
         
         [HarmonyPatch(typeof(Relation), nameof(Relation.GetStartRelationSuccessRate_SexRelationBaseRate))]
@@ -174,16 +227,19 @@ namespace HappyLife
                 sbyte gender2 = targetChar.GetGender();
                 sbyte displayingGender2 = targetChar.GetDisplayingGender();
 
-                if (targetChar.GetBisexual())
+                if ((!selfChar.IsTaiwu() && !targetChar.IsTaiwu()))
                 {
-                    if (gender2 != displayingGender)
+                    if (targetChar.GetBisexual())
                     {
-                        num -= 100;
+                        if (gender2 != displayingGender)
+                        {
+                            num -= 1000;
+                        }
                     }
-                }
-                else if (gender2 == displayingGender)
-                {
-                    num -= 100;
+                    else if (gender2 == displayingGender)
+                    {
+                        num -= 1000;
+                    }
                 }
 
                 if (RelationType.HasRelation(targetToSelf.RelationType, 1024))

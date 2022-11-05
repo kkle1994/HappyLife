@@ -134,7 +134,9 @@ namespace HappyLifeEvent
                 }
 
                 if (GetBoolSettings("AllowSetUpAnyTeammate"))
+                {
                     __result = true;
+                }
             }
         }
 
@@ -147,6 +149,16 @@ namespace HappyLifeEvent
                     __result = false;
             }
         }
+
+        //[HarmonyPatch(typeof(TaiwuEvent_d27c6a3dcf134a8480d6b4e0d2b26702), "OnOption1VisibleCheck")]
+        //public class OnOption1VisibleCheckPatch
+        //{
+        //    public static void Postfix(ref bool __result)
+        //    {
+        //        if (GetBoolSettings("HideKillRuMoRenOption"))
+        //            __result = false;
+        //    }
+        //}8f59be24-f519-4414-be82-8eb239bbbbf8
 
         //[HarmonyPatch(typeof(TaiwuEvent_d27c6a3dcf134a8480d6b4e0d2b26702), "OnOption1VisibleCheck")]
         //public class OnOption1VisibleCheckPatch

@@ -22,5 +22,15 @@ namespace HappyLife
         //        __result = 100;
         //    }
         //}
+
+        [HarmonyPatch(typeof(TaiwuDomain), "CalcReferenceBookSlotUnlockStates")]
+        public class CalcReferenceBookSlotUnlockStatesPatch
+        {
+            public static void Postfix(ref byte __result)
+            {
+                if (GetBoolSettings("UnlimitedReferenceBookSlot"))
+                    __result = 7;
+            }
+        }
     }
 }
