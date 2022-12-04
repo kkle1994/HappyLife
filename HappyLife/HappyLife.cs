@@ -90,7 +90,7 @@ namespace HappyLife
                 if (DomainManager.Mod.GetSetting(modId.ToString(), field, ref result))
                     return result;
             }
-            return false;   
+            return false;
         }
 
         #endregion

@@ -16,6 +16,14 @@ using GameData.Domains.Character.Relation;
 using GameData.Domains.Adventure;
 using GameData.Domains.World.MonthlyEvent;
 using GameData.Domains.TaiwuEvent.DisplayEvent;
+using GameData.Domains.TaiwuEvent.MonthlyEventActions.CustomActions;
+using GameData.Domains.Map;
+using GameData.Domains.TaiwuEvent.MonthlyEventActions;
+using GameData.Common;
+using GameData.DomainEvents;
+using System.Diagnostics;
+using GameData.Utilities;
+using System.Reflection;
 
 namespace HappyLife
 {
@@ -130,6 +138,22 @@ namespace HappyLife
                 if (GetBoolSettings("BanEventSpendPrestige"))
                     return false;
                 return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(MarriageTriggerAction), nameof(MarriageTriggerAction.MonthlyHandler))]
+        public class MonthlyHandlerPatch
+        {
+            public static bool Prefix(ref MarriageTriggerAction __instance)
+            {
+                if (!GetBoolSettings("MarryAdventrueIgnoreMarried"))
+                    return true;
+
+                var method = typeof(MarriageTriggerAction).GetMethod("CallParticipateCharacters", BindingFlags.Instance | BindingFlags.NonPublic);
+                method?.Invoke(__instance, new object[0]);
+                __instance.Activate();
+                __instance.State = 5;
+                return false;
             }
         }
     }

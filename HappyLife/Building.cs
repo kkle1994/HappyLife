@@ -5,6 +5,7 @@ using GameData.Domains;
 using GameData.Domains.Building;
 using GameData.Domains.Character;
 using GameData.Domains.Character.Creation;
+using GameData.Domains.CombatSkill;
 using GameData.Domains.Global;
 using GameData.Domains.Map;
 using GameData.Domains.Organization;
@@ -38,6 +39,68 @@ namespace HappyLife
                 BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[buildingTemplateId];
                 if (buildingBlockItem.Class == EBuildingBlockClass.BornResource)
                     __result = true;
+            }
+        }
+
+        [HarmonyPatch(typeof(WorldDomain), "PreAdvanceMonth")]
+        public class PreAdvanceMonthPatch
+        {
+            public unsafe static void Postfix(DataContext context)
+            {
+                if (GetBoolSettings("GrowAbilitiesWithLoopingNeigong"))
+                {
+                    var taiwu = DomainManager.Taiwu.GetTaiwu();
+                    var neigong = DomainManager.Taiwu.GetTaiwu().GetLoopingNeigong();
+                    var attributes = taiwu.GetBaseMainAttributes();
+                    sbyte index = 0;
+                    switch (neigong)
+                    {
+                        case 38:
+                            index = 0;
+                            if (attributes.Items[index] < short.MaxValue)
+                                taiwu.ChangeBaseMainAttribute(context, index, 1);
+                            break;
+                        case 85:
+                            index = 1;
+                            if (attributes.Items[index] < short.MaxValue)
+                                taiwu.ChangeBaseMainAttribute(context, index, 1);
+                            break;
+                        case 3:
+                            index = 2;
+                            if (attributes.Items[index] < short.MaxValue)
+                                taiwu.ChangeBaseMainAttribute(context, index, 1);
+                            break;
+                        case 64:
+                            index = 3;
+                            if (attributes.Items[index] < short.MaxValue)
+                                taiwu.ChangeBaseMainAttribute(context, index, 1);
+                            break;
+                        case 50:
+                            index = 4;
+                            if (attributes.Items[index] < short.MaxValue)
+                                taiwu.ChangeBaseMainAttribute(context, index, 1);
+                            break;
+                        case 42:
+                            index = 5;
+                            if (attributes.Items[index] < short.MaxValue)
+                                taiwu.ChangeBaseMainAttribute(context, index, 1);
+                            break;
+                    }
+                    //var template = DomainManager.CombatSkill.GetCharCombatSkills(taiwu.GetId())[neigong];
+                    //for(short index = 0; index < 6; index++)
+                    //{
+                    //    if(template.GetCharPropertyBonus(index) > 0)
+                    //        taiwu.ChangeBaseMainAttribute(context, (sbyte)index, 1);
+                    //}
+                    //var addProperties = CombatSkillDomain.EquipAddPropertyDict[neigong];
+                    //var attributes = taiwu.GetBaseMainAttributes();
+                    //if (addProperties != null)
+                    //    for (sbyte index = 0; index < addProperties.Length; index++)
+                    //    {
+                    //        if (addProperties[index] > 0 && attributes.Items[index] < short.MaxValue)
+
+                    //    }
+                }
             }
         }
 
@@ -196,7 +259,7 @@ namespace HappyLife
             public static void Postfix(ref GameData.Domains.Character.Character __instance, DataContext context, IntelligentCharacterCreationInfo info)
             {
 
-                if(GetIntSettings("VillagerRecrultAppearanceLowerLimit")!= 0)
+                if (GetIntSettings("VillagerRecrultAppearanceLowerLimit") != 0)
                 {
                     var stack = new StackTrace();
                     if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
@@ -255,7 +318,7 @@ namespace HappyLife
                 //        _dataArray[index] = buildItem;
                 //    }
                 //}
-                if(GetBoolSettings("RestoreAttainmentPerGrade"))
+                if (GetBoolSettings("RestoreAttainmentPerGrade"))
                 {
                     GlobalConfig.Instance.AddAttainmentPerGrade = new sbyte[] { 10, 15, 20, 25, 30, 35, 40, 45, 50 };
                 }

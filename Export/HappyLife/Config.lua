@@ -69,5 +69,10 @@ return {
 		{Key="RestoreAttainmentPerGrade", DisplayName="提高造诣加成", Description="恢复造诣加成上限到270%。", SettingType="Toggle", DefaultValue=false},
 		{Key="ChildQuickGrowAge", DisplayName="快速长大到X岁", Description="孩童会每个月长大一岁直到X岁，设为0则无效。", SettingType="Slider", DefaultValue=0, MinValue=0, MaxValue=14},
 		{Key="OnlyExistBloodParents", DisplayName="父母栏有亲生父母", Description="父母栏里一定有亲生父母。（仅对太吾子女有效）", SettingType="Toggle", DefaultValue=false},
+		{Key="GrowAbilitiesWithLoopingNeigong", DisplayName="运转内功增加属性", Description="可以通过运转光明狮子劲、损悦法等内功提升属性（是左下角的运转不是配了就行）,每个月增加1点", SettingType="Toggle", DefaultValue=false},
+		{Key="AllowAllGenderInOrganization", DisplayName="门派可有所有性别", Description="任何门派都可以有男有女，不影响晋升", SettingType="Toggle", DefaultValue=false},
+		{Key="LockDaysInMonth", DisplayName="锁定时间", Description="开启后时间只会因为主动消耗而降低。", SettingType="Toggle", DefaultValue=false},
+		{Key="FixCalcCombatPowerRedCode", DisplayName="修复过月红字(勿随意开启)", Description="给群友做的，群友老是遇到一个红字（不是我mod的），试试帮他修下。", SettingType="Toggle", DefaultValue=false},
+		{Key="MarryAdventrueIgnoreMarried", DisplayName="结婚奇遇无视已婚", Description="结婚奇遇无视已婚。", SettingType="Toggle", DefaultValue=false}
 	}
 }

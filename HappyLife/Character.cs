@@ -5,6 +5,7 @@ using GameData.Domains.Character;
 using GameData.Domains.Character.Ai;
 using GameData.Domains.Character.ParallelModifications;
 using GameData.Domains.Character.Relation;
+using GameData.Domains.CombatSkill;
 using GameData.Domains.Global;
 using GameData.Domains.Map;
 using GameData.Domains.TaiwuEvent.EventHelper;
@@ -101,8 +102,20 @@ namespace HappyLife
                     if (__instance.IsTaiwu())
                         __result = false;
                 }
+            }
+        }
 
-
+        [HarmonyPatch(typeof(Character), "ChangeXiangshuInfection")]
+        public class ChangeXiangshuInfectionPatch
+        {
+            public static bool Prefix(Character __instance, ref int delta)
+            {
+                if (GetBoolSettings("BanTaiwuInfected"))
+                {
+                    if (__instance.IsTaiwu())
+                        delta = int.MinValue;
+                }
+                return true;
             }
         }
 
@@ -400,6 +413,28 @@ namespace HappyLife
                     return false;
                 }
                 return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(CombatSkillDomain), nameof(CombatSkillDomain.GetCharCombatSkills))]
+        public class GetCharCombatSkillsPatch
+        {
+            public static void Postfix(int charId, ref Dictionary<short, GameData.Domains.CombatSkill.CombatSkill> __result)
+            {
+                if (GetBoolSettings("FixCalcCombatPowerRedCode"))
+                {
+                    var stack = new StackTrace();
+                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "CalcCombatPower"))
+                    {
+                        foreach (var skill in DomainManager.Character.GetElement_Objects(charId).GetEquippedCombatSkills())
+                        {
+                            if (!__result.ContainsKey(skill))
+                            {
+                                __result[skill] = __result.First().Value;
+                            }
+                        }
+                    }
+                }
             }
         }
 

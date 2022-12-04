@@ -77,6 +77,10 @@ namespace HappyLife
             {
                 if (!father.IsTaiwu() && !mother.IsTaiwu())
                     return true;
+
+                if (!GetBoolSettings("AllowTaiwuHomoPregnant") && !GetBoolSettings("KeepVirgin"))
+                    return true;
+
                 var offlineAddFeatureMethod = typeof(Character).GetMethod("OfflineAddFeature", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
 
                 if (mother.GetGender() == father.GetGender() && !GetBoolSettings("AllowTaiwuHomoPregnant"))

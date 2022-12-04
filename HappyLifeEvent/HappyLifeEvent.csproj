@@ -29,6 +29,9 @@
     <Reference Include="Taiwu_EventPackage_MainStory_DeepValley">
       <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MainStory_DeepValley.dll</HintPath>
     </Reference>
+    <Reference Include="Taiwu_EventPackage_MarryAdventure">
+      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryAdventure.dll</HintPath>
+    </Reference>
     <Reference Include="Taiwu_EventPackage_MarryChengDu">
       <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryChengDu.dll</HintPath>
     </Reference>
