@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappyLife.Frontend", "Happy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HappyLifeEvent", "HappyLifeEvent\HappyLifeEvent.csproj", "{E27D839F-FBC4-474A-9781-7961763FB17E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappyLifeEvil", "HappyLifeEvil\HappyLifeEvil.csproj", "{E7040FA9-EDE6-4A56-8A58-9C6D1AE22BA2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{E27D839F-FBC4-474A-9781-7961763FB17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E27D839F-FBC4-474A-9781-7961763FB17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E27D839F-FBC4-474A-9781-7961763FB17E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7040FA9-EDE6-4A56-8A58-9C6D1AE22BA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7040FA9-EDE6-4A56-8A58-9C6D1AE22BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7040FA9-EDE6-4A56-8A58-9C6D1AE22BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7040FA9-EDE6-4A56-8A58-9C6D1AE22BA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
