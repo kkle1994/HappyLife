@@ -4,7 +4,7 @@ return {
 	BackendPlugins = {"HappyLife.dll", "HappyLifeEvent.dll"},
 	FrontendPlugins = {"HappyLife.Frontend.dll"},
 	Author = "kkle1994@outlook.com",
-	Description = "优生优育，拒绝蛐蛐。反馈bug还是去贴吧。p/8054902346 (傻逼Steam不让放连接)，或者可以加qq群：657760393",
+	Description = "优生优育，拒绝蛐蛐。反馈bug还是去贴吧。p/8054902346 (傻逼Steam不让放连接)，或者可以加qq群：657760393。此项目已经开源于：https://github.com/kkle1994/HappyLife",
 	Cover = "Cover.jpg",
 	Source = 1,
 	FileId = 2871634952,
