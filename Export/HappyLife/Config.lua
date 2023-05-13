@@ -1,10 +1,11 @@
 return {
 	Title = "安居乐业生育办",
 	Version = "1.0",
+	GameVersion = "0.0.62.22",
 	BackendPlugins = {"HappyLife.dll", "HappyLifeEvent.dll"},
 	FrontendPlugins = {"HappyLife.Frontend.dll"},
 	Author = "kkle1994@outlook.com",
-	Description = "优生优育，拒绝蛐蛐。反馈bug还是去贴吧。p/8054902346 (傻逼Steam不让放连接)，或者可以加qq群：657760393",
+	Description = "优生优育，拒绝蛐蛐。反馈bug还是去贴吧。p/8054902346 (傻逼Steam不让放连接)，或者可以加qq群：657760393。此项目已经开源于：https://github.com/kkle1994/HappyLife",
 	Cover = "Cover.jpg",
 	Source = 1,
 	FileId = 2871634952,
@@ -72,7 +73,8 @@ return {
 		{Key="TaiwuChildGender", DisplayName="太吾子女性别", Description="太吾子女性别。", SettingType="Dropdown", Options={ "随机", "男", "女"}, DefaultValue=0},
 		{Key="WorldChildGender", DisplayName="其他人子女性别", Description="其他人子女性别。", SettingType="Dropdown", Options={ "随机", "男", "女"}, DefaultValue=0},
 		{Key="RestoreAttainmentPerGrade", DisplayName="提高造诣加成", Description="恢复造诣加成上限到270%。", SettingType="Toggle", DefaultValue=false},
-		{Key="ChildQuickGrowAge", DisplayName="快速长大到X岁", Description="孩童会每个月长大一岁直到X岁，设为0则无效。", SettingType="Slider", DefaultValue=0, MinValue=0, MaxValue=14},
+		{Key="TaiwuChildQuickGrowAge", DisplayName="村中快速长到X岁", Description="太吾村中，孩童会每个月长大一岁直到X岁，设为0则无效。", SettingType="Slider", DefaultValue=0, MinValue=0, MaxValue=14},
+		{Key="OtherChildQuickGrowAge", DisplayName="村外快速长到X岁", Description="太吾村外，孩童会每个月长大一岁直到X岁，设为0则无效。", SettingType="Slider", DefaultValue=0, MinValue=0, MaxValue=14},
 		{Key="OnlyExistBloodParents", DisplayName="父母栏有亲生父母", Description="父母栏里一定有亲生父母。（仅对太吾子女有效）", SettingType="Toggle", DefaultValue=false},
 		{Key="BanAddStepChildren", DisplayName="禁止过继子女", Description="禁止过继子女，仅对太吾有效。", SettingType="Toggle", DefaultValue=false},
 		{Key="GrowAbilitiesWithLoopingNeigong", DisplayName="运转内功加属性", Description="可以通过运转光明狮子劲、损悦法等内功提升属性（是左下角的运转不是配了就行），每个月增加1点。", SettingType="Toggle", DefaultValue=false},
@@ -84,6 +86,7 @@ return {
 		{Key="RemoveSupportCost", DisplayName="取消部分支持花费", Description="消除本地恩义和历练的花费，但是依然需要达到要求。", SettingType="Toggle", DefaultValue=false},
 		{Key="SeverAndDivorce", DisplayName="背恩绝情离婚", Description="背恩绝情，顺便离婚（如果结了的话）。", SettingType="Toggle", DefaultValue=false},
 		{Key="MakeItemImmediately", DisplayName="立马完成物品制作", Description="快速制作物品。", SettingType="Toggle", DefaultValue=false},
-		
+
 	}
+
 }

@@ -199,12 +199,21 @@ namespace HappyLife
                 __state = -1;
                 if (GetBoolSettings("ShopTaiwuAgeIncreasing") && __instance.IsTaiwu())
                     return false;
-                if (GetIntSettings("ChildQuickGrowAge") != 0 && __instance.GetActualAge() <= GetIntSettings("ChildQuickGrowAge") && __instance.IsTaiwuVillagers()
+
+                if (GetIntSettings("TaiwuChildQuickGrowAge") != 0 && __instance.GetActualAge() <= GetIntSettings("TaiwuChildQuickGrowAge") && __instance.IsTaiwuVillagers()
                     && __instance.GetValue<sbyte>("_birthMonth") != DomainManager.World.GetCurrMonthInYear())
                 {
                     __state = __instance.GetValue<sbyte>("_birthMonth");
                     __instance.SetValue<sbyte>("_birthMonth", DomainManager.World.GetCurrMonthInYear());
                 }
+
+                if(GetIntSettings("OtherChildQuickGrowAge") != 0 && __instance.GetActualAge() <= GetIntSettings("OtherChildQuickGrowAge") && !__instance.IsTaiwuVillagers()
+                    && __instance.GetValue<sbyte>("_birthMonth") != DomainManager.World.GetCurrMonthInYear())
+                {
+                    __state = __instance.GetValue<sbyte>("_birthMonth");
+                    __instance.SetValue<sbyte>("_birthMonth", DomainManager.World.GetCurrMonthInYear());
+                }
+
                 return true;
             }
 

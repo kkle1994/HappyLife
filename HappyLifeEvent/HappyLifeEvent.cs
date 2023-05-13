@@ -68,7 +68,7 @@ namespace HappyLifeEvent
                 //if (IsLoaded)
                 //    return true;
 
-                dynamicHarmony.UnpatchAll("HappyLifeEventInside");
+                Harmony.UnpatchID("HappyLifeEventInside");
                 //dynamicHarmony.PatchAll(Assembly.GetAssembly(typeof(HappyLifeEvent)));
                 dynamicHarmony.PatchAll(typeof(OnOption22VisibleCheckPatch));
                 dynamicHarmony.PatchAll(typeof(OnOption10VisibleCheckPatch));
