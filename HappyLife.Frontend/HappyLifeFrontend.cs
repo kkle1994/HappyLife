@@ -158,7 +158,12 @@ namespace HappyLife.Frontend
                             BuildingBlockItem originalBlockItem = BuildingBlock.Instance[id];
 
                             var _dataArray = BuildingBlock.Instance.GetType().GetField("_dataArray", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(BuildingBlock.Instance) as List<BuildingBlockItem>;
-
+                            if (id >= 1 && id <= 20)
+                            {
+                                typeof(BuildingBlockItem).GetField(nameof(BuildingBlockItem.Type), BindingFlags.Instance | BindingFlags.Public).SetValue(originalBlockItem, EBuildingBlockType.Building);
+                                typeof(BuildingBlockItem).GetField(nameof(BuildingBlockItem.Class), BindingFlags.Instance | BindingFlags.Public).SetValue(originalBlockItem, EBuildingBlockClass.Resource);
+                                typeof(BuildingBlockItem).GetField(nameof(BuildingBlockItem.AddBuildCostPerLevel), BindingFlags.Instance | BindingFlags.Public).SetValue(originalBlockItem, (byte)50);
+                            }
                             for (var resourceIndex = 0; resourceIndex < 8; resourceIndex++)
                             {
                                 originalBlockItem.BaseBuildCost[resourceIndex] = ushort.Parse(parts[resourceIndex + 2]);

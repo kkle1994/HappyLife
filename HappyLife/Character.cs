@@ -1,5 +1,7 @@
 ﻿using BehTree;
 using Config;
+using GameData.Common;
+using GameData.DomainEvents;
 using GameData.Domains;
 using GameData.Domains.Character;
 using GameData.Domains.Character.Ai;
@@ -46,6 +48,12 @@ namespace HappyLife
         public static void SetValue<T>(this Character character, string fieldName, T value, BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic)
         {
             character.GetType().GetField(fieldName, flags).SetValue(character, value);
+        }
+
+        public static bool HasAdoredRelaltionWithTaiwu(this Character character)
+        {
+            return DomainManager.Character.HasRelation(character.GetId(), DomainManager.Taiwu.GetTaiwu().GetId(), 16384)
+                || DomainManager.Character.HasRelation(DomainManager.Taiwu.GetTaiwu().GetId(), character.GetId(), 16384); 
         }
     }
 
@@ -435,6 +443,89 @@ namespace HappyLife
                         }
                     }
                 }
+            }
+        }
+
+        [HarmonyPatch(typeof(CharacterDomain), nameof(CharacterDomain.CreatePregnantState))]
+        public class RaiseMakeLovePatch
+        {
+            public static bool Prefix(ref Character father, ref Character mother)
+            {
+                var setting = GetIntSettings("TaiwuHomoPregnant");
+                if (setting == 0)
+                    return true;
+
+                if (father.GetGender() == mother.GetGender() && (father.IsTaiwu() || mother.IsTaiwu()))
+                {
+                    if (((setting == 1 && father.IsTaiwu()) || (setting == 2 && mother.IsTaiwu())))
+                    {
+                        if (!DomainManager.Character.TryGetPregnantState(father.GetId(), out _))
+                        {
+                            var temp = mother;
+                            mother = father;
+                            father = temp;
+                        }
+                        else
+                            return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(CharacterDomain), "SetElement_DebtsToTaiwu")]
+        public class SetElement_DebtsToTaiwuPatch
+        {
+            public static void Postfix(ref CharacterDomain __instance, DataContext context)
+            {
+                if(GetBoolSettings("BanFavorDebt"))
+                    typeof(CharacterDomain).GetMethod("ClearDebtsToTaiwu", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { context });
+            }
+        }
+
+        [HarmonyPatch(typeof(CharacterDomain), "AddElement_DebtsToTaiwu")]
+        public class AddElement_DebtsToTaiwuPatch
+        {
+            public static void Postfix(ref CharacterDomain __instance, DataContext context)
+            {
+                if (GetBoolSettings("BanFavorDebt"))
+                    typeof(CharacterDomain).GetMethod("ClearDebtsToTaiwu", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { context });
+            }
+        }
+
+        [HarmonyPatch(typeof(Character), nameof(Character.GetFertility))]
+        public class GetFertilityPatch
+        {
+            public static void Postfix(Character __instance, ref short __result)
+            {
+                if (GetBoolSettings("TaiwuFertilityMax"))
+                {
+                    if(__instance.IsTaiwu())
+                        __result = short.MaxValue;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(CharacterDomain), "AddRelationInternal")]
+        public class AddRelationInternalPatch
+        {
+            public static bool Prefix(int charId, int relatedCharId, ushort addingType)
+            {
+                if (GetBoolSettings("BanNTRTaiwu"))
+                {
+                    if (addingType == 16384)
+                    {
+                        var taiwuCharId = DomainManager.Taiwu.GetTaiwuCharId();
+                        if (charId != taiwuCharId && relatedCharId != taiwuCharId)
+                        {
+                            var charIdHasAdoredWithTaiwu = HasRelation(charId, taiwuCharId, 16384) || HasRelation(taiwuCharId, charId, 16384);
+                            var targetIdHasAdoredWithTaiwu = HasRelation(relatedCharId, taiwuCharId, 16384) || HasRelation(taiwuCharId, relatedCharId, 16384);
+                            if (charIdHasAdoredWithTaiwu || targetIdHasAdoredWithTaiwu)
+                                return false;
+                        }
+                    }
+                }
+                return true;
             }
         }
 

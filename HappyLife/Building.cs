@@ -101,6 +101,27 @@ namespace HappyLife
 
                     //    }
                 }
+                if (GetBoolSettings("GrowQualificationsWithReadingBook"))
+                {
+                    var book = DomainManager.Taiwu.GetCurReadingBook();
+
+                    var bookTemplate = SkillBook.Instance.GetItem(book.TemplateId);
+                    if (bookTemplate == null)
+                        return;
+                    if (bookTemplate.Grade != 0)
+                        return;
+                    ECharacterPropertyReferencedType type = ECharacterPropertyReferencedType.Strength;
+                    if (bookTemplate.CombatSkillType != -1)
+                    {
+                        type = (ECharacterPropertyReferencedType)(66 + bookTemplate.CombatSkillType);
+                    }
+
+                    if (bookTemplate.LifeSkillType != -1)
+                    {
+                        type = (ECharacterPropertyReferencedType)(34 + bookTemplate.LifeSkillType);
+                    }
+                    DomainManager.Taiwu.GetTaiwu().ModifyBasePropertyValue(context, type, 1);
+                }
             }
         }
 
@@ -341,6 +362,11 @@ namespace HappyLife
 
                             var id = short.Parse(parts[0]);
                             BuildingBlockItem originalBlockItem = BuildingBlock.Instance[id];
+                            if (id >= 1 && id <= 20)
+                            {
+                                //typeof(BuildingBlockItem).GetField(nameof(BuildingBlockItem.Class), BindingFlags.Instance | BindingFlags.Public).SetValue(originalBlockItem, EBuildingBlockClass.Resource);
+                                typeof(BuildingBlockItem).GetField(nameof(BuildingBlockItem.AddBuildCostPerLevel), BindingFlags.Instance | BindingFlags.Public).SetValue(originalBlockItem, (byte)50);
+                            }
 
                             var _dataArray = BuildingBlock.Instance.GetType().GetField("_dataArray", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(BuildingBlock.Instance) as List<BuildingBlockItem>;
 
@@ -353,15 +379,53 @@ namespace HappyLife
                             originalBlockItem.OperationTotalProgress[0] = 150;
                             originalBlockItem.OperationTotalProgress[1] = 50;
                             originalBlockItem.OperationTotalProgress[2] = 100;
-
                             if (GetBoolSettings("NoDependentBuilding"))
                             {
                                 originalBlockItem.DependBuildings.RemoveAll(s => s > 20);
                             }
-
                             _dataArray[id] = originalBlockItem;
                         }
                     }
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(BuildingDomain), nameof(BuildingDomain.CanUpgrade))]
+        public class CanUpgradePatch
+        {
+            public unsafe static void Postfix(BuildingDomain __instance, BuildingBlockKey blockKey, ref bool __result)
+            {
+                if (GetIntSettings("EnableBuildResource") != 0)
+                {
+                    BuildingBlockData element_BuildingBlocks = __instance.GetElement_BuildingBlocks(blockKey);
+                    BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[element_BuildingBlocks.TemplateId];
+                    if (element_BuildingBlocks.TemplateId >=1 && element_BuildingBlocks.TemplateId <= 20)
+                    {
+                        GameData.Domains.Character.Character taiwu = DomainManager.Taiwu.GetTaiwu();
+                        for (sbyte b = 0; b < 8; b = (sbyte)(b + 1))
+                        {
+                            int num = buildingBlockItem.BaseBuildCost[b] * (100 + buildingBlockItem.AddBuildCostPerLevel * element_BuildingBlocks.Level) / 1000 * 10;
+                            if (taiwu.GetResource(b) < num)
+                            {
+                                __result = false;
+                            }
+                        }
+                    }
+                    __result = true;
+                }
+            }
+        }
+
+
+        [HarmonyPatch(typeof(BuildingDomain), nameof(BuildingDomain.StartMakeItem))]
+        public class StartMakeItemPatch
+        {
+            public static string PatchFile = "..\\Mod\\HappyLife\\Datas\\BuildingDataPatch.csv";
+            public static void Postfix(ref MakeItemData __result)
+            {
+                if (GetBoolSettings("MakeItemImmediately"))
+                {
+                    __result.LeftTime = 0;
                 }
             }
         }

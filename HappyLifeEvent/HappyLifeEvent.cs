@@ -70,10 +70,13 @@ namespace HappyLifeEvent
 
                 dynamicHarmony.UnpatchAll("HappyLifeEventInside");
                 //dynamicHarmony.PatchAll(Assembly.GetAssembly(typeof(HappyLifeEvent)));
-                dynamicHarmony.PatchAll(typeof(OnOption9VisibleCheckPatch));
+                dynamicHarmony.PatchAll(typeof(OnOption22VisibleCheckPatch));
                 dynamicHarmony.PatchAll(typeof(OnOption10VisibleCheckPatch));
                 dynamicHarmony.PatchAll(typeof(OnOption1VisibleCheckPatch));
-                dynamicHarmony.PatchAll(typeof(OnOption18VisibleCheckPatch));
+                dynamicHarmony.PatchAll(typeof(OnOption14VisibleCheckPatch));
+                dynamicHarmony.PatchAll(typeof(OnOption1SelectPatch1));
+                dynamicHarmony.PatchAll(typeof(OnOption1SelectPatch2));
+                dynamicHarmony.PatchAll(typeof(OnOption1SelectPatch3));
                 //IsLoaded = true;
                 //if(GetBoolSettings("UnlimitedMerchantFavorability"))
                 //{
@@ -86,8 +89,8 @@ namespace HappyLifeEvent
             }
         }
 
-        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption9VisibleCheck")]
-        public class OnOption9VisibleCheckPatch
+        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption10VisibleCheck")]
+        public class OnOption10VisibleCheckPatch
         {
             public static void Postfix(ref bool __result, TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b __instance)
             {
@@ -105,8 +108,8 @@ namespace HappyLifeEvent
             }
         }
 
-        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption10VisibleCheck")]
-        public class OnOption10VisibleCheckPatch
+        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption14VisibleCheck")]
+        public class OnOption14VisibleCheckPatch
         {
             public static void Postfix(ref bool __result, TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b __instance)
             {
@@ -123,8 +126,11 @@ namespace HappyLifeEvent
             }
         }
 
-        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption18VisibleCheck")]
-        public class OnOption18VisibleCheckPatch
+        /// <summary>
+        /// 允许任意做媒
+        /// </summary>
+        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption22VisibleCheck")]
+        public class OnOption22VisibleCheckPatch
         {
             public static void Postfix(ref bool __result, TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b __instance)
             {
@@ -150,6 +156,67 @@ namespace HappyLifeEvent
             }
         }
 
+        [HarmonyPatch(typeof(TaiwuEvent_3124b791cf0a4f7e80d8e93de8fe4de7), "OnOption1Select")]
+        public class OnOption1SelectPatch1
+        {
+            public static bool Prefix(TaiwuEvent_3124b791cf0a4f7e80d8e93de8fe4de7 __instance, ref string __result)
+            {
+                if (GetBoolSettings("RemoveSupportCost"))
+                {
+                    Character character = __instance.ArgBox.GetCharacter("CharacterId");
+                    sbyte roleGrade = EventHelper.GetRoleGrade(character);
+                    int num = (1 + roleGrade) * (1 + roleGrade) * (1 + roleGrade) * 50;
+                    Character character2 = __instance.ArgBox.GetCharacter("RoleTaiwu");
+                    if (character2.GetExp() > num)
+                    {
+                        __result = "20fd5e4a-add7-4b7e-ba3d-54195378a60e";
+                    }
+                    else
+                        __result = "ad734ddc-f99e-4fbd-8cbc-555e6661c5b2";
+
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(TaiwuEvent_0e9bec3fe20d4cb3acd88b2775bc9f73), "OnOption1Select")]
+        public class OnOption1SelectPatch2
+        {
+            public static bool Prefix(TaiwuEvent_0e9bec3fe20d4cb3acd88b2775bc9f73 __instance, ref string __result)
+            {
+                if (GetBoolSettings("RemoveSupportCost"))
+                {
+                    Character character = __instance.ArgBox.GetCharacter("CharacterId");
+                    sbyte roleGrade = EventHelper.GetRoleGrade(character);
+                    int num = -(20 + roleGrade * 10) * 10;
+                    short characterOrganizationAreaId = EventHelper.GetCharacterOrganizationAreaId(character);
+                    if (EventHelper.GetAreaSpiritualDebtByAreaId(characterOrganizationAreaId) >= -num)
+                    {
+                        __result = "52989a8c-3c4e-41cb-9d3d-0a6a1a285d13";
+                    }
+                    else
+                        __result = "8dea7537-f565-4301-82c6-b30b105a1500";
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(TaiwuEvent_0c35bf5e73ce4b029be5e580561183b2), "OnOption1Select")]
+        public class OnOption1SelectPatch3
+        {
+            public static void Postfix(TaiwuEvent_0c35bf5e73ce4b029be5e580561183b2 __instance)
+            {
+                if (GetBoolSettings("SeverAndDivorce"))
+                {
+                    Character character = __instance.ArgBox.GetCharacter("CharacterId");
+                    Character character2 = __instance.ArgBox.GetCharacter("RoleTaiwu");
+                    EventHelper.ApplyRelationSeverHusbandOrWife(character2, character);
+                }
+            }
+        }
+
         //[HarmonyPatch(typeof(TaiwuEvent_d27c6a3dcf134a8480d6b4e0d2b26702), "OnOption1VisibleCheck")]
         //public class OnOption1VisibleCheckPatch
         //{
@@ -158,9 +225,9 @@ namespace HappyLifeEvent
         //        if (GetBoolSettings("HideKillRuMoRenOption"))
         //            __result = false;
         //    }
-        //}8f59be24-f519-4414-be82-8eb239bbbbf8
+        //}0e9bec3f-e20d-4cb3-acd8-8b2775bc9f73 0c35bf5e-73ce-4b02-9be5-e580561183b2
 
-        //[HarmonyPatch(typeof(TaiwuEvent_d27c6a3dcf134a8480d6b4e0d2b26702), "OnOption1VisibleCheck")]
+        //[HarmonyPatch(typeof(TaiwuEvent_10919e6350984b919e79c22aa67155db), "OnOption1VisibleCheck")]
         //public class OnOption1VisibleCheckPatch
         //{
         //    public static void Postfix(ref bool __result)

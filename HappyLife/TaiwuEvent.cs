@@ -141,6 +141,24 @@ namespace HappyLife
             }
         }
 
+        [HarmonyPatch(typeof(CharacterDomain), nameof(CharacterDomain.GetAliveSpouse))]
+        public class GetAliveSpousePatch
+        {
+            public static bool Prefix(ref int __result)
+            {
+                if (!GetBoolSettings("MarryAdventrueIgnoreMarried"))
+                    return true;
+
+                var stack = new StackTrace();
+                if (stack.GetFrames().Exist(f => f.GetMethod().Name == "MonthlyHandler"))
+                {
+                    __result = -1;
+                    return false;
+                }
+                return true;
+            }
+        }
+
         [HarmonyPatch(typeof(MarriageTriggerAction), nameof(MarriageTriggerAction.MonthlyHandler))]
         public class MonthlyHandlerPatch
         {
@@ -148,12 +166,34 @@ namespace HappyLife
             {
                 if (!GetBoolSettings("MarryAdventrueIgnoreMarried"))
                     return true;
+                if (__instance.State == 1)
+                {
+                    var method = typeof(MarriageTriggerAction).GetMethod("CallParticipateCharacters", BindingFlags.Instance | BindingFlags.NonPublic);
 
-                var method = typeof(MarriageTriggerAction).GetMethod("CallParticipateCharacters", BindingFlags.Instance | BindingFlags.NonPublic);
-                method?.Invoke(__instance, new object[0]);
-                __instance.Activate();
-                __instance.State = 5;
+                    method?.Invoke(__instance, new object[0]);
+                    __instance.Activate();
+                    __instance.State = 5;
+                }
                 return false;
+            }
+        }
+
+        [HarmonyPatch(typeof(Character), nameof(Character.ChangeHappiness))]
+        public class SetHappinessPatch
+        {
+            public static bool Prefix(ref Character __instance, ref int delta)
+            {
+                if (!GetBoolSettings("CancelMonthlyEventHappinessReduce"))
+                    return true;
+                var stack = new StackTrace();
+                if (stack.GetFrames().Exist(f => f.GetMethod().Name == "AdvanceMonth"))
+                {
+                    if (delta < 0 && __instance.HasAdoredRelaltionWithTaiwu())
+                    {
+                        delta = 0;
+                    }
+                }
+                return true;
             }
         }
     }

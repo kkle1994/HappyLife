@@ -61,6 +61,13 @@ namespace HappyLife
                     if (countOfChildren >= GetIntSettings("TaiwuChildrenLimit"))
                         __result = false;
                 }
+                if(GetIntSettings("TaiwuSpouseChildrenLimit") != -1 && (father.IsTaiwu() || mother.IsTaiwu()))
+                {
+                    var spouse = father.IsTaiwu() ?  mother : father;
+                    var countOfChildren = DomainManager.Character.GetRelatedCharacters(spouse.GetId()).BloodChildren.GetCount();
+                    if (countOfChildren >= GetIntSettings("TaiwuSpouseChildrenLimit"))
+                        __result = false;
+                }
                 else if (GetIntSettings("NpcChildrenLimit") != -1 && !father.IsTaiwu() && !mother.IsTaiwu())
                 {
                     if (GetIntSettings("NpcChildrenLimit") < DomainManager.Character.GetRelatedCharacters(father.GetId()).BloodChildren.GetCount() ||
@@ -130,6 +137,33 @@ namespace HappyLife
             }
         }
 
+        
+        [HarmonyPatch(typeof(CharacterDomain), "GetElement_PregnantStates")]
+        public class GetElement_PregnantStatesPatch
+        {
+            public static void Postfix(ref PregnantState __result)
+            {
+                if (GetBoolSettings("OnlyExistBloodParents") && (DomainManager.Taiwu.GetTaiwuCharId() == __result.FatherId))
+                {
+                    __result.CreateFatherRelation = true;
+                }
+            }
+        }
+
+
+        [HarmonyPatch(typeof(CharacterDomain), nameof(CharacterDomain.AddHusbandOrWifeRelations))]
+        public class AddHusbandOrWifeRelationsPatch
+        {
+            public static bool Prefix(CharacterDomain __instance, DataContext context, int charId, int spouseCharId, int establishmentDate)
+            {
+                if (GetBoolSettings("BanAddStepChildren") && (DomainManager.Taiwu.GetTaiwuCharId() == charId || DomainManager.Taiwu.GetTaiwuCharId() == spouseCharId))
+                {
+                    __instance.AddRelation(context, charId, spouseCharId, 1024, establishmentDate);
+                    return false;
+                }
+                return true;
+            }
+        }
         //[HarmonyPatch(typeof(CharacterDomain), nameof(CharacterDomain.GetAliveSpouse))]
         //public class GetAliveSpousePatch
         //{
@@ -181,7 +215,7 @@ namespace HappyLife
         //        return true;
         //    }
         //}
-        
+
         [HarmonyPatch(typeof(CharacterDomain), "ParallelCreateIntelligentCharacter")]
         public class ParallelCreateIntelligentCharacterPatch
         {
@@ -201,6 +235,13 @@ namespace HappyLife
             }
             public static bool Prefix(CharacterDomain __instance, DataContext context, ref IntelligentCharacterCreationInfo info, bool recordModification = true)
             {
+                if (GetBoolSettings("OnlyExistBloodParents") && info.PregnantState != null && (DomainManager.Taiwu.GetTaiwuCharId() == info.PregnantState.FatherId))
+                {
+                    info.Father = DomainManager.Taiwu.GetTaiwu();
+                    info.FatherCharId = info.PregnantState.FatherId;
+                    info.PregnantState.CreateFatherRelation = true;
+                }
+
                 IRandomSource random = context.Random;
                 if (GetIntSettings("TaiwuChildGender") != 0 &&
                     ((info.Father != null && info.Father.IsTaiwu()) || (info.Mother!=null && info.Mother.IsTaiwu())))
