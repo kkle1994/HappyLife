@@ -73,7 +73,7 @@ namespace HappyLifeEvent
                 dynamicHarmony.PatchAll(typeof(OnOption22VisibleCheckPatch));
                 dynamicHarmony.PatchAll(typeof(OnOption10VisibleCheckPatch));
                 dynamicHarmony.PatchAll(typeof(OnOption1VisibleCheckPatch));
-                dynamicHarmony.PatchAll(typeof(OnOption14VisibleCheckPatch));
+                dynamicHarmony.PatchAll(typeof(OnOption15VisibleCheckPatch));
                 dynamicHarmony.PatchAll(typeof(OnOption1SelectPatch1));
                 dynamicHarmony.PatchAll(typeof(OnOption1SelectPatch2));
                 dynamicHarmony.PatchAll(typeof(OnOption1SelectPatch3));
@@ -108,8 +108,8 @@ namespace HappyLifeEvent
             }
         }
 
-        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption14VisibleCheck")]
-        public class OnOption14VisibleCheckPatch
+        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption15VisibleCheck")]
+        public class OnOption15VisibleCheckPatch
         {
             public static void Postfix(ref bool __result, TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b __instance)
             {
@@ -129,7 +129,7 @@ namespace HappyLifeEvent
         /// <summary>
         /// 允许任意做媒
         /// </summary>
-        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption22VisibleCheck")]
+        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption23VisibleCheck")]
         public class OnOption22VisibleCheckPatch
         {
             public static void Postfix(ref bool __result, TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b __instance)

@@ -1,15 +1,8 @@
-﻿using Config;
-using GameData.Common;
+﻿using GameData.Common;
 using GameData.Domains;
-using GameData.Domains.Character;
-using GameData.Domains.Global;
+using GameData.Domains.Extra;
 using GameData.Domains.Merchant;
 using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HappyLife
 {
@@ -43,6 +36,18 @@ namespace HappyLife
                             __result.GenerateGoodsLevelList(context, pageIndice, character);
                         }
                     }
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(ExtraDomain), nameof(ExtraDomain.AddMerchantDebt))]
+        public class AddMerchantDebtPatch
+        {
+            public static void Postfix(DataContext context)
+            {
+                if (GetBoolSettings("HighLevelShop"))
+                {
+
                 }
             }
         }

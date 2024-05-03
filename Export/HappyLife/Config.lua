@@ -1,7 +1,7 @@
 return {
 	Title = "安居乐业生育办",
 	Version = "1.0",
-	GameVersion = "0.0.62.22",
+	GameVersion = "0.0.69.60",
 	BackendPlugins = {"HappyLife.dll", "HappyLifeEvent.dll"},
 	FrontendPlugins = {"HappyLife.Frontend.dll"},
 	Author = "kkle1994@outlook.com",

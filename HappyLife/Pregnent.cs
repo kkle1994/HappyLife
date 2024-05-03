@@ -1,24 +1,11 @@
-﻿using BehTree;
-using GameData.Common;
-using GameData.Common.SingleValueCollection;
+﻿using GameData.Common;
 using GameData.Domains;
 using GameData.Domains.Character;
 using GameData.Domains.Character.AvatarSystem;
 using GameData.Domains.Character.Creation;
-using GameData.Domains.Character.Relation;
-using GameData.Domains.Global;
-using GameData.Domains.Map;
-using GameData.Domains.SpecialEffect.CombatSkill.Emeipai.DefenseAndAssist;
-using GameData.Utilities;
 using HarmonyLib;
 using Redzen.Random;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace HappyLife
 {
@@ -61,9 +48,9 @@ namespace HappyLife
                     if (countOfChildren >= GetIntSettings("TaiwuChildrenLimit"))
                         __result = false;
                 }
-                if(GetIntSettings("TaiwuSpouseChildrenLimit") != -1 && (father.IsTaiwu() || mother.IsTaiwu()))
+                if (GetIntSettings("TaiwuSpouseChildrenLimit") != -1 && (father.IsTaiwu() || mother.IsTaiwu()))
                 {
-                    var spouse = father.IsTaiwu() ?  mother : father;
+                    var spouse = father.IsTaiwu() ? mother : father;
                     var countOfChildren = DomainManager.Character.GetRelatedCharacters(spouse.GetId()).BloodChildren.GetCount();
                     if (countOfChildren >= GetIntSettings("TaiwuSpouseChildrenLimit"))
                         __result = false;
@@ -98,13 +85,13 @@ namespace HappyLife
 
                 if (!GetBoolSettings("KeepVirgin"))
                 {
-                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)196, true });
-                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)196, true });
+                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)196, true, false });
+                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)196, true, false });
                 }
                 else
                 {
-                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)195, true });
-                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)195, true });
+                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)195, true, false });
+                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)195, true, false });
                 }
                 if (!PregnantState.CheckPregnant(random, father, mother, isRape))
                 {
@@ -112,7 +99,7 @@ namespace HappyLife
                     return false;
                 }
 
-                offlineAddFeatureMethod.Invoke(mother, new object[] { (short)197, true });
+                offlineAddFeatureMethod.Invoke(mother, new object[] { (short)197, true, false });
                 __result = true;
 
                 return false;
@@ -137,7 +124,7 @@ namespace HappyLife
             }
         }
 
-        
+
         [HarmonyPatch(typeof(CharacterDomain), "GetElement_PregnantStates")]
         public class GetElement_PregnantStatesPatch
         {
@@ -244,9 +231,9 @@ namespace HappyLife
 
                 IRandomSource random = context.Random;
                 if (GetIntSettings("TaiwuChildGender") != 0 &&
-                    ((info.Father != null && info.Father.IsTaiwu()) || (info.Mother!=null && info.Mother.IsTaiwu())))
+                    ((info.Father != null && info.Father.IsTaiwu()) || (info.Mother != null && info.Mother.IsTaiwu())))
                 {
-                    if (info.CharTemplateId %2 == 1 && GetIntSettings("TaiwuChildGender") == 2)
+                    if (info.CharTemplateId % 2 == 1 && GetIntSettings("TaiwuChildGender") == 2)
                     {
                         (short baseAttraction, AvatarData avatar) tuple2 = GenerateMainChildAvatar(random, info.Mother, info.Father, info.DeadFather, 0);
                         IntelligentCharacterCreationInfo intelligentCharacterCreationInfo = new IntelligentCharacterCreationInfo(info.Location, info.OrgInfo, (short)(info.CharTemplateId - 1));
@@ -266,7 +253,7 @@ namespace HappyLife
                         intelligentCharacterCreationInfo.DestinyType = info.DestinyType;
                         info = intelligentCharacterCreationInfo;
                     }
-                    else if(info.CharTemplateId % 2 == 0 && GetIntSettings("TaiwuChildGender") == 1)
+                    else if (info.CharTemplateId % 2 == 0 && GetIntSettings("TaiwuChildGender") == 1)
                     {
                         (short baseAttraction, AvatarData avatar) tuple2 = GenerateMainChildAvatar(random, info.Mother, info.Father, info.DeadFather, 1);
                         IntelligentCharacterCreationInfo intelligentCharacterCreationInfo = new IntelligentCharacterCreationInfo(info.Location, info.OrgInfo, (short)(info.CharTemplateId + 1));
@@ -338,7 +325,7 @@ namespace HappyLife
         [HarmonyPatch(typeof(CharacterDomain), nameof(CharacterDomain.CreateIntelligentCharacter))]
         public class CreateIntelligentCharacterPatch
         {
-            public static void Postfix(CharacterDomain __instance,ref DataContext context, ref IntelligentCharacterCreationInfo info, ref Character __result)
+            public static void Postfix(CharacterDomain __instance, ref DataContext context, ref IntelligentCharacterCreationInfo info, ref Character __result)
             {
                 if (GetBoolSettings("OnlyExistBloodParents") && info.PregnantState != null && info.PregnantState.FatherId == DomainManager.Taiwu.GetTaiwuCharId())
                 {

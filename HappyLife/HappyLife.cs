@@ -1,37 +1,18 @@
-﻿using System;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Collections.Generic;
-using GameData;
-using HarmonyLib;
-using GameData.Domains;
+﻿using GameData.Domains;
 using GameData.Domains.Character;
-using HarmonyLib.Tools;
-using TaiwuModdingLib.Core.Plugin;
-using System.IO;
-using GameData.Domains.Adventure;
-using GameData.Domains.Taiwu;
 using GameData.Domains.Combat;
-using GameData.Common;
-using GameData.Domains.Mod;
-using System.Runtime;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Runtime.CompilerServices;
-using GameData.Domains.Building;
 using GameData.Domains.Information;
-using GameData.Domains.Map;
-using GameData.Domains.World.Notification;
 using GameData.Domains.LifeRecord.GeneralRecord;
-using GameData.Domains.Character.Relation;
-using GameData.Domains.Merchant;
+using GameData.Domains.Mod;
 using GameData.Domains.Organization;
-using GameData.Domains.TaiwuEvent.EventManager;
-using GameData.Domains.TaiwuEvent;
+using GameData.Domains.Taiwu;
 using GameData.Domains.World;
-using GameData.Serializer;
-using System.Diagnostics;
 using GameData.Utilities;
+using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using TaiwuModdingLib.Core.Plugin;
 
 namespace HappyLife
 {
@@ -321,6 +302,6 @@ namespace HappyLife
                 return true;
             }
         }
-        
+
     }
 }

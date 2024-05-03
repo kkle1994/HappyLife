@@ -23,7 +23,7 @@ namespace HappyLife.Frontend
     {
         public override void Initialize()
         {
-            this.HarmonyInstance.PatchAll(typeof(GetFavorabilityPatch));
+            //this.HarmonyInstance.PatchAll(typeof(GetFavorabilityTypePatch));
             this.HarmonyInstance.PatchAll(typeof(GetCharmLevelTextPatch));
             this.HarmonyInstance.PatchAll(typeof(IsPageDisabledPatch));
             this.HarmonyInstance.PatchAll(typeof(IsPageShowPatch));
@@ -80,17 +80,17 @@ namespace HappyLife.Frontend
         //    }
         //}
 
-        [HarmonyPatch(typeof(UI_Shop), "GetFavorability")]
-        public class GetFavorabilityPatch
-        {
-            public static void Postfix(ref int __result)
-            {
-                if(GetBoolSettings("UnlimitedMerchantFavorability"))
-                    __result = 5000;
-            }
-        }
+        //[HarmonyPatch(typeof(UI_Shop), nameof(UI_Shop.IsPageDisabled))]
+        //public class IsPageDisabledPatch
+        //{
+        //    public static void Postfix(ref bool __result)
+        //    {
+        //        if (GetBoolSettings("UnlimitedMerchantFavorability"))
+        //            __result = false;
+        //    }
+        //}
 
-        [HarmonyPatch(typeof(UI_RecordSelect), "OnEnable")]
+        [HarmonyPatch(typeof(UI_MainMenu), "OnInit")]
         public class BindGlobalEventsPatch
         {
             public static string PatchFile = ".\\Mod\\HappyLife\\Datas\\BuildingDataPatch.csv";

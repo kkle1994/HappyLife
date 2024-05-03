@@ -1,15 +1,4 @@
-﻿using GameData.Common;
-using GameData.Domains.Merchant;
-using GameData.Domains;
-using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameData.Domains.Building;
-
-namespace HappyLife
+﻿namespace HappyLife
 {
     public partial class HappyLife
     {

@@ -1,29 +1,18 @@
 ﻿using Config;
-using Config.Common;
 using GameData.Common;
 using GameData.Domains;
 using GameData.Domains.Building;
 using GameData.Domains.Character;
 using GameData.Domains.Character.Creation;
-using GameData.Domains.CombatSkill;
-using GameData.Domains.Global;
-using GameData.Domains.Map;
 using GameData.Domains.Organization;
-using GameData.Domains.Taiwu;
 using GameData.Domains.World;
 using GameData.Utilities;
 using HarmonyLib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using TaiwuModdingLib.Core.Utils;
 
 namespace HappyLife
 {
@@ -253,46 +242,91 @@ namespace HappyLife
                 if (GetIntSettings("VillagerRecrultSex") != 0)
                 {
                     var stack = new StackTrace();
-                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
+                    if (FrameExist(stack.GetFrames(), f => f.GetMethod()?.Name == "RecruitPeople"))
                         gender = GetIntSettings("VillagerRecrultSex") == 1 ? (sbyte)1 : (sbyte)0;
                 }
                 return true;
             }
         }
 
-        [HarmonyPatch(typeof(GameData.Domains.Character.Character), "OfflineCreateIntelligentCharacter")]
-        public class OfflineCreateIntelligentCharacterPatch
+        public static bool FrameExist<T>(IReadOnlyList<T> array, Predicate<T> predicate)
         {
-            public static int MaxAvatarRetryTimes = 10;
-            public static bool Prefix(ref GameData.Domains.Character.Character __instance, DataContext context, ref IntelligentCharacterCreationInfo info)
+            if (predicate == null)
             {
-                if (GetIntSettings("VillagerRecrultAppearanceLowerLimit") == 0)
-                    return true;
-                else
+                return false;
+            }
+
+            int i = 0;
+            for (int count = array.Count; i < count; i++)
+            {
+                if (predicate(array[i]))
                 {
-                    var stack = new StackTrace();
-                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
-                        info.BaseAttraction = (short)(200 + GetIntSettings("VillagerRecrultAppearanceLowerLimit") * 100);
                     return true;
                 }
             }
 
-            public static void Postfix(ref GameData.Domains.Character.Character __instance, DataContext context, IntelligentCharacterCreationInfo info)
+            return false;
+        }
+
+        //[HarmonyPatch(typeof(GameData.Domains.Character.Character), "OfflineCreateIntelligentCharacter")]
+        //public class OfflineCreateIntelligentCharacterPatch
+        //{
+        //    public static int MaxAvatarRetryTimes = 10;
+        //    public static bool Prefix(ref GameData.Domains.Character.Character __instance, DataContext context, ref IntelligentCharacterCreationInfo info)
+        //    {
+        //        if (GetIntSettings("VillagerRecrultAppearanceLowerLimit") == 0)
+        //            return true;
+        //        else
+        //        {
+        //            var stack = new StackTrace();
+        //            if (stack.GetFrames().Exist(f => f.GetMethod().Name.Contains("Recruit")))
+        //                info.BaseAttraction = (short)(200 + GetIntSettings("VillagerRecrultAppearanceLowerLimit") * 100);
+        //            return true;
+        //        }
+        //    }
+
+        //    public static void Postfix(ref GameData.Domains.Character.Character __instance, DataContext context, IntelligentCharacterCreationInfo info)
+        //    {
+
+        //        if (GetIntSettings("VillagerRecrultAppearanceLowerLimit") != 0)
+        //        {
+        //            var stack = new StackTrace();
+        //            if (stack.GetFrames().Exist(f => f.GetMethod().Name.Contains("Recruit")))
+        //            {
+        //                var retryTimes = 0;
+        //                var characterItem = Config.Character.Instance[info.CharTemplateId];
+        //                while ((short)(200 + GetIntSettings("VillagerRecrultAppearanceLowerLimit") * 100) > __instance.GetAvatar().BaseCharm && retryTimes < MaxAvatarRetryTimes)
+        //                {
+        //                    __instance.GetType().GetMethod("OfflineCreateAttractionAndAvatar", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { context, characterItem.PresetBodyType, info });
+        //                    retryTimes++;
+        //                }
+        //            }
+        //        }
+
+
+        //        if (GetIntSettings("VillagerRecrultMorality") == 0)
+        //            return;
+        //        else
+        //        {
+        //            var stack = new StackTrace();
+        //            if (stack.GetFrames().Exist(f => f.GetMethod().Name.Contains("Recruit")))
+        //            {
+        //                __instance.GetType().GetField("_baseMorality", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(__instance, (short)(200 * GetIntSettings("VillagerRecrultMorality") - 100 - 500));
+        //            }
+        //            return;
+        //        }
+        //    }
+        //}
+
+        [HarmonyPatch(typeof(GameData.Domains.Character.Character), nameof(GameData.Domains.Character.Character.GenerateRecruitCharacterData))]
+        public class CreateCharacterByRecruitCharacterDataPatch
+        {
+            public static void Postfix(ref GameData.Domains.Character.Character __instance, RecruitCharacterData __result)
             {
 
                 if (GetIntSettings("VillagerRecrultAppearanceLowerLimit") != 0)
                 {
-                    var stack = new StackTrace();
-                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
-                    {
-                        var retryTimes = 0;
-                        var characterItem = Config.Character.Instance[info.CharTemplateId];
-                        while ((short)(200 + GetIntSettings("VillagerRecrultAppearanceLowerLimit") * 100) > __instance.GetAvatar().BaseCharm && retryTimes < MaxAvatarRetryTimes)
-                        {
-                            __instance.GetType().GetMethod("OfflineCreateAttractionAndAvatar", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { context, characterItem.PresetBodyType, info });
-                            retryTimes++;
-                        }
-                    }
+                    __result.BaseAttraction = (short)(200 + GetIntSettings("VillagerRecrultAppearanceLowerLimit") * 100);
                 }
 
 
@@ -300,16 +334,16 @@ namespace HappyLife
                     return;
                 else
                 {
-                    var stack = new StackTrace();
-                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
+                    for (var i = 0; i < 10; i++)
                     {
-                        __instance.GetType().GetField("_baseMorality", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(__instance, (short)(200 * GetIntSettings("VillagerRecrultMorality") - 100 - 500));
+                        var value = __result.GetBaseMorality() - (short)(200 * GetIntSettings("VillagerRecrultMorality") - 100 - 500);
+                        if (value < 100 || value >= 100)
+                            break;
                     }
                     return;
                 }
             }
         }
-
 
         [HarmonyPatch(typeof(WorldDomain), "OnLoadWorld")]
         public class BuildingPatch
@@ -399,7 +433,7 @@ namespace HappyLife
                 {
                     BuildingBlockData element_BuildingBlocks = __instance.GetElement_BuildingBlocks(blockKey);
                     BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[element_BuildingBlocks.TemplateId];
-                    if (element_BuildingBlocks.TemplateId >=1 && element_BuildingBlocks.TemplateId <= 20)
+                    if (element_BuildingBlocks.TemplateId >= 1 && element_BuildingBlocks.TemplateId <= 20)
                     {
                         GameData.Domains.Character.Character taiwu = DomainManager.Taiwu.GetTaiwu();
                         for (sbyte b = 0; b < 8; b = (sbyte)(b + 1))
