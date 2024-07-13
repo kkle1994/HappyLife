@@ -78,7 +78,7 @@ namespace HappyLife
         }
 
         [HarmonyPatch(typeof(Character), "OfflineMakeLove")]
-                public class OfflineMakeLovePatch
+        public class OfflineMakeLovePatch
         {
             public static bool Prefix(ref bool __result, IRandomSource random, Character father, Character mother, bool isRape)
             {
