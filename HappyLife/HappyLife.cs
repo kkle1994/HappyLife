@@ -165,9 +165,9 @@ namespace HappyLife
         [HarmonyPatch(typeof(CharacterDomain), "CalcFavorabilityDelta")]
         public class CalcFavorabilityDeltaPatch
         {
-            public static void Postfix(CharacterDomain __instance, Character character, Character relatedChar, ref int __result)
+            public static void Postfix(CharacterDomain __instance, int characterId, int relatedCharId, ref int __result)
             {
-                if (character.GetId() == DomainManager.Taiwu.GetTaiwuCharId() || relatedChar.GetId() == DomainManager.Taiwu.GetTaiwuCharId())
+                if (characterId == DomainManager.Taiwu.GetTaiwuCharId() || relatedCharId == DomainManager.Taiwu.GetTaiwuCharId())
                 {
                     var trace = new StackTrace();
                     if (__result < 0 && GetBoolSettings("CancelMonthlyEventFavorReduce"))
