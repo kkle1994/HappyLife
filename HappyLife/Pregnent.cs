@@ -78,7 +78,7 @@ namespace HappyLife
         }
 
         [HarmonyPatch(typeof(Character), "OfflineMakeLove")]
-        public class OfflineMakeLovePatch
+                public class OfflineMakeLovePatch
         {
             public static bool Prefix(ref bool __result, IRandomSource random, Character father, Character mother, bool isRape)
             {
@@ -98,13 +98,13 @@ namespace HappyLife
 
                 if (!GetBoolSettings("KeepVirgin"))
                 {
-                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)196, true });
-                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)196, true });
+                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)196, true, true });
+                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)196, true, true });
                 }
                 else
                 {
-                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)195, true });
-                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)195, true });
+                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)195, true, true });
+                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)195, true, true });
                 }
                 if (!PregnantState.CheckPregnant(random, father, mother, isRape))
                 {
@@ -112,7 +112,7 @@ namespace HappyLife
                     return false;
                 }
 
-                offlineAddFeatureMethod.Invoke(mother, new object[] { (short)197, true });
+                offlineAddFeatureMethod.Invoke(mother, new object[] { (short)197, true, true });
                 __result = true;
 
                 return false;
