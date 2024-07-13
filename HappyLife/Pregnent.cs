@@ -98,13 +98,13 @@ namespace HappyLife
 
                 if (!GetBoolSettings("KeepVirgin"))
                 {
-                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)196, true, true });
-                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)196, true, true });
+                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)196, true, false });
+                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)196, true, false });
                 }
                 else
                 {
-                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)195, true, true });
-                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)195, true, true });
+                    offlineAddFeatureMethod.Invoke(mother, new object[] { (short)195, true, false });
+                    offlineAddFeatureMethod.Invoke(father, new object[] { (short)195, true, false });
                 }
                 if (!PregnantState.CheckPregnant(random, father, mother, isRape))
                 {
@@ -112,7 +112,7 @@ namespace HappyLife
                     return false;
                 }
 
-                offlineAddFeatureMethod.Invoke(mother, new object[] { (short)197, true, true });
+                offlineAddFeatureMethod.Invoke(mother, new object[] { (short)197, true, false });
                 __result = true;
 
                 return false;
