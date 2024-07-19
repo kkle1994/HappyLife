@@ -1,13 +1,5 @@
-﻿using GameData.Domains;
-using GameData.Domains.Character;
-using GameData.Domains.Global;
-using GameData.Domains.Taiwu;
+﻿using GameData.Domains.Taiwu;
 using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HappyLife
 {

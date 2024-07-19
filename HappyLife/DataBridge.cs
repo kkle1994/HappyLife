@@ -1,14 +1,6 @@
-﻿using GameData.Domains.Character;
-using GameData.Domains.Organization;
-using GameData.Domains;
+﻿using GameData.GameDataBridge.VnPipe;
 using HarmonyLib;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameData.GameDataBridge;
-using GameData.GameDataBridge.VnPipe;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -50,7 +42,7 @@ namespace HappyLife
                     }
                     __result = num;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     __result = -1;
                 }

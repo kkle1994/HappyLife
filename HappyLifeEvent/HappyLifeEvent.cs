@@ -3,11 +3,8 @@ using GameData.Domains;
 using GameData.Domains.Character;
 using GameData.Domains.Mod;
 using GameData.Domains.TaiwuEvent.EventHelper;
-using GameData.Domains.TaiwuEvent.EventOption;
 using GameData.Domains.World;
 using HarmonyLib;
-using System;
-using System.Reflection;
 using TaiwuModdingLib.Core.Plugin;
 
 namespace HappyLifeEvent
@@ -65,26 +62,14 @@ namespace HappyLifeEvent
             static Harmony dynamicHarmony = new Harmony("HappyLifeEventInside");
             public static bool Prefix()
             {
-                //if (IsLoaded)
-                //    return true;
-
                 Harmony.UnpatchID("HappyLifeEventInside");
-                //dynamicHarmony.PatchAll(Assembly.GetAssembly(typeof(HappyLifeEvent)));
                 dynamicHarmony.PatchAll(typeof(OnOption22VisibleCheckPatch));
                 dynamicHarmony.PatchAll(typeof(OnOption10VisibleCheckPatch));
                 dynamicHarmony.PatchAll(typeof(OnOption1VisibleCheckPatch));
-                dynamicHarmony.PatchAll(typeof(OnOption14VisibleCheckPatch));
+                dynamicHarmony.PatchAll(typeof(OnOption15VisibleCheckPatch));
                 dynamicHarmony.PatchAll(typeof(OnOption1SelectPatch1));
                 dynamicHarmony.PatchAll(typeof(OnOption1SelectPatch2));
                 dynamicHarmony.PatchAll(typeof(OnOption1SelectPatch3));
-                //IsLoaded = true;
-                //if(GetBoolSettings("UnlimitedMerchantFavorability"))
-                //{
-                //    for(var index = 0; index < GlobalConfig.Instance.MerchantFavorabilityUpperLimits.Length; index++)
-                //    {
-                //        GlobalConfig.Instance.MerchantFavorabilityUpperLimits[index] = 100;
-                //    }
-                //}
                 return true;
             }
         }
@@ -97,8 +82,8 @@ namespace HappyLifeEvent
                 Character character = __instance.ArgBox.GetCharacter("RoleTaiwu");
                 Character character2 = __instance.ArgBox.GetCharacter("CharacterId");
                 var relation = DomainManager.Character.GetRelation(character.GetId(), character2.GetId());
-                var hasAdoredRelation = relation.RelationType / 16384 % 2 == 1; 
-                
+                var hasAdoredRelation = relation.RelationType / 16384 % 2 == 1;
+
                 if (hasAdoredRelation)
                 {
                     __result = false;
@@ -108,8 +93,8 @@ namespace HappyLifeEvent
             }
         }
 
-        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption14VisibleCheck")]
-        public class OnOption14VisibleCheckPatch
+        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption15VisibleCheck")]
+        public class OnOption15VisibleCheckPatch
         {
             public static void Postfix(ref bool __result, TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b __instance)
             {
@@ -129,7 +114,7 @@ namespace HappyLifeEvent
         /// <summary>
         /// 允许任意做媒
         /// </summary>
-        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption22VisibleCheck")]
+        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption23VisibleCheck")]
         public class OnOption22VisibleCheckPatch
         {
             public static void Postfix(ref bool __result, TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b __instance)
@@ -151,7 +136,7 @@ namespace HappyLifeEvent
         {
             public static void Postfix(ref bool __result)
             {
-                if(GetBoolSettings("HideKillRuMoRenOption"))
+                if (GetBoolSettings("HideKillRuMoRenOption"))
                     __result = false;
             }
         }
@@ -216,39 +201,5 @@ namespace HappyLifeEvent
                 }
             }
         }
-
-        //[HarmonyPatch(typeof(TaiwuEvent_d27c6a3dcf134a8480d6b4e0d2b26702), "OnOption1VisibleCheck")]
-        //public class OnOption1VisibleCheckPatch
-        //{
-        //    public static void Postfix(ref bool __result)
-        //    {
-        //        if (GetBoolSettings("HideKillRuMoRenOption"))
-        //            __result = false;
-        //    }
-        //}0e9bec3f-e20d-4cb3-acd8-8b2775bc9f73 0c35bf5e-73ce-4b02-9be5-e580561183b2
-
-        //[HarmonyPatch(typeof(TaiwuEvent_10919e6350984b919e79c22aa67155db), "OnOption1VisibleCheck")]
-        //public class OnOption1VisibleCheckPatch
-        //{
-        //    public static void Postfix(ref bool __result)
-        //    {
-        //        if (GetBoolSettings("HideKillRuMoRenOption"))
-        //            __result = false;
-        //    }
-        //}
-
-        //[HarmonyPatch(typeof(TaiwuEvent_716f82a10c634614aace0498de80d5d0), "OnOption10VisibleCheck")]
-
-        //[HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption13AvailableCheck")]
-        //public class OnOption13AvailableCheckPatch
-        //{
-        //    public static void Postfix(ref bool __result, TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b __instance)
-        //    {
-        //        if (GetBoolSettings("UnlimitedSworn"))
-        //        {
-        //            __result = true;
-        //        }
-        //    }
-        //}
     }
 }

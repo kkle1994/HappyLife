@@ -1,29 +1,18 @@
 ﻿using Config;
-using Config.Common;
 using GameData.Common;
 using GameData.Domains;
 using GameData.Domains.Building;
 using GameData.Domains.Character;
-using GameData.Domains.Character.Creation;
-using GameData.Domains.CombatSkill;
-using GameData.Domains.Global;
-using GameData.Domains.Map;
+using GameData.Domains.Character.AvatarSystem;
 using GameData.Domains.Organization;
-using GameData.Domains.Taiwu;
 using GameData.Domains.World;
-using GameData.Utilities;
 using HarmonyLib;
+using Redzen.Random;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using TaiwuModdingLib.Core.Utils;
 
 namespace HappyLife
 {
@@ -86,20 +75,6 @@ namespace HappyLife
                                 taiwu.ChangeBaseMainAttribute(context, index, 1);
                             break;
                     }
-                    //var template = DomainManager.CombatSkill.GetCharCombatSkills(taiwu.GetId())[neigong];
-                    //for(short index = 0; index < 6; index++)
-                    //{
-                    //    if(template.GetCharPropertyBonus(index) > 0)
-                    //        taiwu.ChangeBaseMainAttribute(context, (sbyte)index, 1);
-                    //}
-                    //var addProperties = CombatSkillDomain.EquipAddPropertyDict[neigong];
-                    //var attributes = taiwu.GetBaseMainAttributes();
-                    //if (addProperties != null)
-                    //    for (sbyte index = 0; index < addProperties.Length; index++)
-                    //    {
-                    //        if (addProperties[index] > 0 && attributes.Items[index] < short.MaxValue)
-
-                    //    }
                 }
                 if (GetBoolSettings("GrowQualificationsWithReadingBook"))
                 {
@@ -125,61 +100,6 @@ namespace HappyLife
             }
         }
 
-        //[HarmonyPatch(typeof(WorldDomain), "PreAdvanceMonth")]
-        //public class PreAdvanceMonthPatch
-        //{
-        //    public unsafe static void Postfix(DataContext context)
-        //    {
-        //        if (GetIntSettings("ImproveSkillWithWorkPossibility") == 0)
-        //            return;
-        //        var workItems = DomainManager.Taiwu.GetType().GetField("_villagerWork", BindingFlags.Instance | BindingFlags.NonPublic)
-        //            .GetValue(DomainManager.Taiwu) as Dictionary<int, VillagerWorkData>;
-
-        //        var random = new Random();
-
-        //        foreach (var workItem in workItems)
-        //        {
-        //            var workItemData = workItem.Value;
-        //            var buildingTemplate = BuildingBlock.Instance[workItemData.BlockTemplateId];
-        //            if (buildingTemplate.RequireLifeSkillType != -1)
-        //            {
-        //                if (random.Next(0, 100) < GetIntSettings("ImproveSkillWithWorkPossibility"))
-        //                {
-        //                    var character =  DomainManager.Character.GetElement_Objects(workItemData.CharacterId);
-        //                    var lifeSkills = character.GetBaseLifeSkillQualifications();
-
-        //                    if (GetIntSettings("ImproveSkillWithWorkLimited") == 0 || lifeSkills.Items[buildingTemplate.RequireLifeSkillType] <= GetIntSettings("ImproveSkillWithWorkLimited"))
-        //                    {
-        //                        lifeSkills.Items[buildingTemplate.RequireLifeSkillType] = 120;
-        //                        character.SetBaseLifeSkillQualifications(ref lifeSkills, context);
-        //                    }
-        //                }
-        //            }
-        //            if (buildingTemplate.RequireCombatSkillType != -1)
-        //            {
-        //                if (random.Next(0, 100) < GetIntSettings("ImproveSkillWithWorkPossibility"))
-        //                {
-        //                    var character = DomainManager.Character.GetElement_Objects(workItemData.CharacterId);
-        //                    var combatSkills = character.GetBaseCombatSkillQualifications();
-
-        //                    var newData = new short[14];
-        //                    for (var index = 0; index < 14; index++)
-        //                    {
-        //                        newData[index] = combatSkills.Items[index];
-        //                    }
-
-        //                    var skillId = random.Next(0, 14);
-        //                    newData[skillId] = (short)(newData[skillId] + 1);
-        //                    var newCombatSkill = new CombatSkillShorts(newData);
-        //                    if (GetIntSettings("ImproveSkillWithWorkLimited") == 0 || newData[skillId] <= GetIntSettings("ImproveSkillWithWorkLimited"))
-        //                    {
-        //                        character.SetBaseCombatSkillQualifications(ref newCombatSkill, context);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
         [HarmonyPatch(typeof(BuildingDomain), "ParallelUpdate")]
         public class ParallelUpdatePatch
@@ -253,63 +173,77 @@ namespace HappyLife
                 if (GetIntSettings("VillagerRecrultSex") != 0)
                 {
                     var stack = new StackTrace();
-                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
+                    if (FrameExist(stack.GetFrames(), f => f.GetMethod()?.Name == "RecruitPeople"))
                         gender = GetIntSettings("VillagerRecrultSex") == 1 ? (sbyte)1 : (sbyte)0;
                 }
                 return true;
             }
         }
 
-        [HarmonyPatch(typeof(GameData.Domains.Character.Character), "OfflineCreateIntelligentCharacter")]
-        public class OfflineCreateIntelligentCharacterPatch
+        public static bool FrameExist<T>(IReadOnlyList<T> array, Predicate<T> predicate)
         {
-            public static int MaxAvatarRetryTimes = 10;
-            public static bool Prefix(ref GameData.Domains.Character.Character __instance, DataContext context, ref IntelligentCharacterCreationInfo info)
+            if (predicate == null)
             {
-                if (GetIntSettings("VillagerRecrultAppearanceLowerLimit") == 0)
-                    return true;
-                else
+                return false;
+            }
+
+            int i = 0;
+            for (int count = array.Count; i < count; i++)
+            {
+                if (predicate(array[i]))
                 {
-                    var stack = new StackTrace();
-                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
-                        info.BaseAttraction = (short)(200 + GetIntSettings("VillagerRecrultAppearanceLowerLimit") * 100);
                     return true;
                 }
             }
 
-            public static void Postfix(ref GameData.Domains.Character.Character __instance, DataContext context, IntelligentCharacterCreationInfo info)
+            return false;
+        }
+
+
+        [HarmonyPatch(typeof(GameData.Domains.Character.Character), nameof(GameData.Domains.Character.Character.GenerateRecruitCharacterData))]
+        public class CreateCharacterByRecruitCharacterDataPatch
+        {
+            public static void Postfix(ref GameData.Domains.Character.Character __instance, RecruitCharacterData __result, IRandomSource random, sbyte peopleLevel, short shopEventTemplateId, sbyte lifeSkillType)
             {
+                var isResultFixed = false;
+                if (GetIntSettings("VillagerRecrultSex") != 0)
+                {
+                    __result.Gender = GetIntSettings("VillagerRecrultSex") == 1 ? (sbyte)1 : (sbyte)0;
+                    isResultFixed = true;
+
+                }
 
                 if (GetIntSettings("VillagerRecrultAppearanceLowerLimit") != 0)
                 {
-                    var stack = new StackTrace();
-                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
-                    {
-                        var retryTimes = 0;
-                        var characterItem = Config.Character.Instance[info.CharTemplateId];
-                        while ((short)(200 + GetIntSettings("VillagerRecrultAppearanceLowerLimit") * 100) > __instance.GetAvatar().BaseCharm && retryTimes < MaxAvatarRetryTimes)
-                        {
-                            __instance.GetType().GetMethod("OfflineCreateAttractionAndAvatar", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { context, characterItem.PresetBodyType, info });
-                            retryTimes++;
-                        }
-                    }
+                    isResultFixed = true;
+                    __result.BaseAttraction = (short)(200 + GetIntSettings("VillagerRecrultAppearanceLowerLimit") * 100);
                 }
 
-
-                if (GetIntSettings("VillagerRecrultMorality") == 0)
-                    return;
-                else
+                if (isResultFixed)
                 {
-                    var stack = new StackTrace();
-                    if (stack.GetFrames().Exist(f => f.GetMethod().Name == "RecruitPeople"))
-                    {
-                        __instance.GetType().GetField("_baseMorality", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(__instance, (short)(200 * GetIntSettings("VillagerRecrultMorality") - 100 - 500));
-                    }
-                    return;
+                    var location = DomainManager.Taiwu.GetTaiwuVillageLocation();
+                    var stateTemplateId = DomainManager.Map.GetStateTemplateIdByAreaId(location.AreaId);
+                    var orgTemplateId = MapState.Instance[stateTemplateId].SectID;
+                    var charTemplateId = OrganizationDomain.GetCharacterTemplateId(orgTemplateId, stateTemplateId, __result.Gender);
+                    CharacterItem template = Config.Character.Instance[charTemplateId];
+                    __result.AvatarData = AvatarManager.Instance.GetRandomAvatar(random, __result.Gender, __result.Transgender, template.PresetBodyType, __result.BaseAttraction);
                 }
             }
         }
 
+        [HarmonyPatch(typeof(RecruitCharacterData), nameof(RecruitCharacterData.GetBaseMorality))]
+        public class GetBaseMoralityPatch
+        {
+            public static void Postfix(ref RecruitCharacterData __instance, ref short __result)
+            {
+                if (GetIntSettings("VillagerRecrultMorality") == 0)
+                    return;
+                else
+                {
+                    __result = (short)(200 * GetIntSettings("VillagerRecrultMorality") - 100 - 500);
+                }
+            }
+        }
 
         [HarmonyPatch(typeof(WorldDomain), "OnLoadWorld")]
         public class BuildingPatch
@@ -317,28 +251,6 @@ namespace HappyLife
             public static string PatchFile = "..\\Mod\\HappyLife\\Datas\\BuildingDataPatch.csv";
             public static void Postfix()
             {
-                //if (GetBoolSettings("EnableBuildResource"))
-                //{
-                //    var _dataArray = BuildingBlock.Instance.GetType().GetField("_dataArray", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(BuildingBlock.Instance) as List<BuildingBlockItem>;
-                //    for(var index = 0; index< _dataArray.Count; index++)
-                //    {
-                //        var buildItem = _dataArray[index];
-                //        if (buildItem.Class == EBuildingBlockClass.BornResource)
-                //        {
-                //            for (var resourceIndex = 0; resourceIndex < 8; resourceIndex++)
-                //            {
-                //                buildItem.BaseBuildCost[resourceIndex] *= 20;
-                //            }
-
-
-                //            if (GetBoolSettings("NoDependentBuilding"))
-                //            {
-                //                buildItem.DependBuildings.RemoveAll(s => s > 20);
-                //            }
-                //        }
-                //        _dataArray[index] = buildItem;
-                //    }
-                //}
                 if (GetBoolSettings("RestoreAttainmentPerGrade"))
                 {
                     GlobalConfig.Instance.AddAttainmentPerGrade = new sbyte[] { 10, 15, 20, 25, 30, 35, 40, 45, 50 };
@@ -399,7 +311,7 @@ namespace HappyLife
                 {
                     BuildingBlockData element_BuildingBlocks = __instance.GetElement_BuildingBlocks(blockKey);
                     BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[element_BuildingBlocks.TemplateId];
-                    if (element_BuildingBlocks.TemplateId >=1 && element_BuildingBlocks.TemplateId <= 20)
+                    if (element_BuildingBlocks.TemplateId >= 1 && element_BuildingBlocks.TemplateId <= 20)
                     {
                         GameData.Domains.Character.Character taiwu = DomainManager.Taiwu.GetTaiwu();
                         for (sbyte b = 0; b < 8; b = (sbyte)(b + 1))

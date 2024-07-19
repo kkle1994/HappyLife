@@ -1,16 +1,10 @@
-﻿using BehTree;
-using Config;
+﻿using Config;
 using GameData.Common;
-using GameData.DomainEvents;
 using GameData.Domains;
 using GameData.Domains.Character;
 using GameData.Domains.Character.Ai;
-using GameData.Domains.Character.ParallelModifications;
 using GameData.Domains.Character.Relation;
 using GameData.Domains.CombatSkill;
-using GameData.Domains.Global;
-using GameData.Domains.Map;
-using GameData.Domains.TaiwuEvent.EventHelper;
 using GameData.Utilities;
 using HarmonyLib;
 using Redzen.Random;
@@ -19,9 +13,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using static GameData.Domains.Character.Ai.AiHelper;
 using Character = GameData.Domains.Character.Character;
 
@@ -53,7 +44,7 @@ namespace HappyLife
         public static bool HasAdoredRelaltionWithTaiwu(this Character character)
         {
             return DomainManager.Character.HasRelation(character.GetId(), DomainManager.Taiwu.GetTaiwu().GetId(), 16384)
-                || DomainManager.Character.HasRelation(DomainManager.Taiwu.GetTaiwu().GetId(), character.GetId(), 16384); 
+                || DomainManager.Character.HasRelation(DomainManager.Taiwu.GetTaiwu().GetId(), character.GetId(), 16384);
         }
     }
 
@@ -105,7 +96,7 @@ namespace HappyLife
                         __result = false;
                     }
                 }
-                if(GetBoolSettings("BanTaiwuInfected"))
+                if (GetBoolSettings("BanTaiwuInfected"))
                 {
                     if (__instance.IsTaiwu())
                         __result = false;
@@ -207,7 +198,7 @@ namespace HappyLife
                     __instance.SetValue<sbyte>("_birthMonth", DomainManager.World.GetCurrMonthInYear());
                 }
 
-                if(GetIntSettings("OtherChildQuickGrowAge") != 0 && __instance.GetActualAge() <= GetIntSettings("OtherChildQuickGrowAge") && !__instance.IsTaiwuVillagers()
+                if (GetIntSettings("OtherChildQuickGrowAge") != 0 && __instance.GetActualAge() <= GetIntSettings("OtherChildQuickGrowAge") && !__instance.IsTaiwuVillagers()
                     && __instance.GetValue<sbyte>("_birthMonth") != DomainManager.World.GetCurrMonthInYear())
                 {
                     __state = __instance.GetValue<sbyte>("_birthMonth");
@@ -243,7 +234,7 @@ namespace HappyLife
             //    return instructions;
             //}
         }
-        
+
         [HarmonyPatch(typeof(Relation), nameof(Relation.GetStartRelationSuccessRate_SexRelationBaseRate))]
         public class SexRelationBaseRatePatch
         {
@@ -390,7 +381,7 @@ namespace HappyLife
             public static bool Prefix(ref Character __instance, ref Character __result, IRandomSource random, short aiRelationsTemplateId, List<int> selectableChars, ref Personalities selfPersonalities)
             {
                 var tripleStartRelationChance = __instance.GetType().GetMethod("TripleStartRelationChance", BindingFlags.Instance | BindingFlags.NonPublic);
-                if ((aiRelationsTemplateId == 2 || aiRelationsTemplateId == 3 || aiRelationsTemplateId == 4 || aiRelationsTemplateId ==5) && !__instance.IsTaiwu() && GetBoolSettings("NoImmoralFameActions"))
+                if ((aiRelationsTemplateId == 2 || aiRelationsTemplateId == 3 || aiRelationsTemplateId == 4 || aiRelationsTemplateId == 5) && !__instance.IsTaiwu() && GetBoolSettings("NoImmoralFameActions"))
                 {
                     bool flag = selectableChars.Count == 0;
                     Character character;
@@ -487,7 +478,7 @@ namespace HappyLife
         {
             public static void Postfix(ref CharacterDomain __instance, DataContext context)
             {
-                if(GetBoolSettings("BanFavorDebt"))
+                if (GetBoolSettings("BanFavorDebt"))
                     typeof(CharacterDomain).GetMethod("ClearDebtsToTaiwu", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { context });
             }
         }
@@ -509,7 +500,7 @@ namespace HappyLife
             {
                 if (GetBoolSettings("TaiwuFertilityMax"))
                 {
-                    if(__instance.IsTaiwu())
+                    if (__instance.IsTaiwu())
                         __result = short.MaxValue;
                 }
             }
@@ -572,4 +563,3 @@ namespace HappyLife
         //}
     }
 }
-    
