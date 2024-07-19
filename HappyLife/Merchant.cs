@@ -8,19 +8,6 @@ namespace HappyLife
 {
     public partial class HappyLife
     {
-        //[HarmonyPatch(typeof(MerchantData), nameof(MerchantData.GenerateGoods), new Type[] { typeof(DataContext), typeof(sbyte) })]
-        //public class GenerateGoodsPatch
-        //{
-        //    public static bool Prefix(ref DataContext context, ref sbyte level)
-        //    {
-        //        if (GetIntSettings("GoodLevelIncrease") != 0)
-        //        {
-        //            level += (sbyte)GetIntSettings("GoodLevelIncrease");
-        //        }
-        //        return true;
-        //    }
-        //}
-
         [HarmonyPatch(typeof(MerchantDomain), nameof(MerchantDomain.GetMerchantData))]
         public class GetMerchantDataPatch
         {
@@ -40,7 +27,7 @@ namespace HappyLife
             }
         }
 
-        [HarmonyPatch(typeof(ExtraDomain), nameof(ExtraDomain.AddMerchantDebt))]
+        [HarmonyPatch(typeof(ExtraDomain), nameof(ExtraDomain.SetMerchantDebts))]
         public class AddMerchantDebtPatch
         {
             public static void Postfix(DataContext context)

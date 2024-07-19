@@ -1,19 +1,11 @@
-﻿using GameData.Domains.Character.AvatarSystem;
-using GameData.Domains.Character;
+﻿using Config;
+using GameData.Domains.Merchant;
 using HarmonyLib;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using TaiwuModdingLib.Core.Plugin;
-using TaiwuModdingLib.Core.Utils;
 using UnityEngine;
-using Config;
-using GameData.Domains.Merchant;
-using System.Collections.Generic;
-using GameData.Domains.World;
-using GameData.GameDataBridge;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
-using JetBrains.Annotations;
 
 namespace HappyLife.Frontend
 {
@@ -23,21 +15,12 @@ namespace HappyLife.Frontend
     {
         public override void Initialize()
         {
-            //this.HarmonyInstance.PatchAll(typeof(GetFavorabilityTypePatch));
             this.HarmonyInstance.PatchAll(typeof(GetCharmLevelTextPatch));
             this.HarmonyInstance.PatchAll(typeof(IsPageDisabledPatch));
             this.HarmonyInstance.PatchAll(typeof(IsPageShowPatch));
             this.HarmonyInstance.PatchAll(typeof(BuildingInitDataPatch));
             this.HarmonyInstance.PatchAll(typeof(UpdateHealthRecoverStatePatch));
             this.HarmonyInstance.PatchAll(typeof(BindGlobalEventsPatch));
-            //this.HarmonyInstance.PatchAll(typeof(BuildingInitDataPatch));
-            //this.HarmonyInstance.PatchAll(typeof(BuildingInitDataPatch));
-            //this.HarmonyInstance.PatchAll(typeof(BuildingInitDataPatch));
-            //this.HarmonyInstance.PatchAll(typeof(BuildingInitDataPatch));
-            //this.HarmonyInstance.PatchAll(typeof(BuildingInitDataPatch));
-            //this.HarmonyInstance.PatchAll(typeof(BuildingInitDataPatch));
-            //this.HarmonyInstance.PatchAll(typeof(BuildingInitDataPatch));
-            //this.HarmonyInstance.PatchAll(typeof(BuildingInitDataPatch));
         }
         public static bool GetBoolSettings(string field)
         {
@@ -50,46 +33,6 @@ namespace HappyLife.Frontend
             return false;
         }
 
-        //[HarmonyPatch(typeof(UI_BuildingArea), "BlockCanBuild")]
-        //public class BlockCanBuildPatch
-        //{
-        //    public static void Postfix(ref bool __result)
-        //    {
-        //        if (GetBoolSettings("UnlimitedDependBuilding"))
-        //            __result = true;
-        //    }
-        //}
-
-        //[HarmonyPatch(typeof(UI_BuildingArea), "NearDependBuildings")]
-        //public class NearDependBuildingsPatch
-        //{
-        //    public static void Postfix(ref bool __result)
-        //    {
-        //        if (GetBoolSettings("UnlimitedDependBuilding"))
-        //            __result = true;
-        //    }
-        //}
-
-        //[HarmonyPatch(typeof(UI_BuildingArea), "RenderCanBuild")]
-        //public class RenderCanBuildPatch
-        //{
-        //    public static void Postfix(ref bool __result)
-        //    {
-        //        if (GetBoolSettings("UnlimitedDependBuilding"))
-        //            __result = true;
-        //    }
-        //}
-
-        //[HarmonyPatch(typeof(UI_Shop), nameof(UI_Shop.IsPageDisabled))]
-        //public class IsPageDisabledPatch
-        //{
-        //    public static void Postfix(ref bool __result)
-        //    {
-        //        if (GetBoolSettings("UnlimitedMerchantFavorability"))
-        //            __result = false;
-        //    }
-        //}
-
         [HarmonyPatch(typeof(UI_MainMenu), "OnInit")]
         public class BindGlobalEventsPatch
         {
@@ -98,28 +41,6 @@ namespace HappyLife.Frontend
             public static string CharacterTemplateIdsPatchFile = ".\\Mod\\HappyLife\\Datas\\CharacterTemplateIds.txt";
             public static void Postfix()
             {
-                //if (GetBoolSettings("EnableBuildResource"))
-                //{
-                //    var _dataArray = BuildingBlock.Instance.GetType().GetField("_dataArray", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(BuildingBlock.Instance) as List<BuildingBlockItem>;
-                //    for (var index = 0; index < _dataArray.Count; index++)
-                //    {
-                //        var buildItem = _dataArray[index];
-                //        if (buildItem.Class == EBuildingBlockClass.BornResource)
-                //        {
-                //            for (var resourceIndex = 0; resourceIndex < 8; resourceIndex++)
-                //            {
-                //                buildItem.BaseBuildCost[resourceIndex] *= 20;
-                //            }
-
-
-                //            if (GetBoolSettings("NoDependentBuilding"))
-                //            {
-                //                buildItem.DependBuildings.RemoveAll(s => s > 20);
-                //            }
-                //        }
-                //        _dataArray[index] = buildItem;
-                //    }
-                //}
                 if (GetBoolSettings("EnableBuildResource"))
                 {
                     if (!File.Exists(PatchFile))
@@ -182,20 +103,6 @@ namespace HappyLife.Frontend
                             _dataArray[id] = originalBlockItem;
                         }
                     }
-
-
-
-                    //var output = "";
-                    //var constants = typeof(Character.DefKey).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-                    //foreach (var constant in constants)
-                    //{
-                    //    var name = constant.Name;
-                    //    var value = constant.GetValue(null);
-                    //    if (Character.Instance[(short)value].CreatingType == 1)
-                    //        output += $"{name}\r\n";
-                    //}
-                    //File.WriteAllText(CharacterTemplateIdsPatchFile, output);
-
                 }
             }
         }
@@ -236,41 +143,6 @@ namespace HappyLife.Frontend
             }
         }
 
-        //[HarmonyPatch(typeof(UI_BuildingArea), "CanExecuteOperation")]
-        //public class CanExecuteOperationPatch
-        //{
-        //    public static void Postfix(UI_BuildingOverview __instance)
-        //    {
-        //        if (GetBoolSettings("EnableBuildResource"))
-        //        {
-
-        //        }
-        //    }
-        //}
-
-        //[HarmonyPatch(typeof(WorldDomainHelper), "InitGameRes")]
-        //public class InitGameResPatch
-        //{
-        //    public static void Postfix(BuildingBlock __instance)
-        //    {
-        //        if (GetBoolSettings("EnableBuildResource"))
-        //        {
-        //            __instance.Iterate(delegate (BuildingBlockItem item)
-        //            {
-        //                if (item.Class == EBuildingBlockClass.BornResource)
-        //                {
-        //                    for(var resourceIndex = 0; resourceIndex < 7; resourceIndex++)
-        //                    {
-        //                        item.BaseBuildCost[resourceIndex] *= 20;
-        //                    }
-        //                }
-
-        //                return true;
-        //            });
-        //        }
-        //    }
-        //}
-
 
         [HarmonyPatch(typeof(CommonUtils), "GetCharmLevelText")]
         public class GetCharmLevelTextPatch
@@ -282,7 +154,7 @@ namespace HappyLife.Frontend
                 {
                     isFixedCharacter = true;
                 }
-                if(GetBoolSettings("ShowMaskCharm"))
+                if (GetBoolSettings("ShowMaskCharm"))
                 {
                     faceVisible = true;
                 }
@@ -290,7 +162,7 @@ namespace HappyLife.Frontend
             }
         }
 
-        [HarmonyPatch(typeof(UI_Shop), nameof(UI_Shop.IsPageShow))]
+        [HarmonyPatch(typeof(UI_Shop), nameof(UI_Shop.NotifyUIShow))]
         public class IsPageShowPatch
         {
             //public static void Prefix(UI_Shop __instance)
@@ -357,40 +229,5 @@ namespace HappyLife.Frontend
 
             }
         }
-
-        //[HarmonyPatch(typeof(UI_Shop), "OnNotifyGameData")]
-        //public class UI_ShopOnInitPatch
-        //{
-        //    public static void Prefix(UI_Shop __instance)
-        //    {
-        //        Debug.Log("OnNotifyGameData!!");
-        //        typeof(UI_Shop).GetField("_merchantFavorability").SetValue(__instance, 5000);
-        //    }
-
-        //    public static void Postfix(UI_Shop __instance)
-        //    {
-        //        Debug.Log("OnNotifyGameData!!!");
-        //        typeof(UI_Shop).GetField("_merchantFavorability").SetValue(__instance, 5000);
-        //    }
-        //}
-
-
-        //[HarmonyPatch(typeof(UI_BuildingArea), "PlaceBuildingInputHandle")] 
-        //public class PlaceBuildingInputHandlePatch
-        //{
-        //    public static bool Prefix(ref UI_BuildingArea __instance)
-        //    {
-        //        if (GetBoolSettings("UnlimitedDependBuilding"))
-        //        {
-        //            var data = __instance.GetFieldValue("_buildingPlacementData") as UI_BuildingArea.BuildingPlacementData;
-        //            data.CanBuild = true;
-        //            //var confirmBuildMethod = typeof(UI_BuildingArea).GetMethod("ConfirmBuild");
-        //            //confirmBuildMethod.Invoke(__instance, null);
-        //            //__instance._isPlacingBuildingNow = false;
-        //            //__instance.CancelPlaceBuilding(true);
-        //        }
-        //        return false;
-        //    }
-        //}
     }
 }
