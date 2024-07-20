@@ -76,7 +76,7 @@ namespace HappyLife
 
         #endregion
 
-        [HarmonyPatch(typeof(Character), "GetRecoveryOfFlaw")]
+        [HarmonyPatch(typeof(Character), nameof(Character.GetRecoveryOfFlaw))]
         public class NoRecover1Patch
         {
             public static void Postfix(Character __instance, ref short __result)
@@ -112,7 +112,7 @@ namespace HappyLife
             }
         }
 
-        [HarmonyPatch(typeof(CombatDomain), "ReduceWeaponDurability")]
+        [HarmonyPatch(typeof(CombatDomain), nameof(CombatDomain.ReduceWeaponDurability))]
         public class NoWeaponDurablilityPatch
         {
             public static bool Prefix(ref int reduceValue)
@@ -124,7 +124,7 @@ namespace HappyLife
             }
         }
 
-        [HarmonyPatch(typeof(OrganizationDomain), "GetApprovingRateUpperLimit")]
+        [HarmonyPatch(typeof(OrganizationDomain), nameof(OrganizationDomain.GetApprovingRateUpperLimit))]
         public class GetMerchantFavorabilityBuilding
         {
             public static void Postfix(ref short __result)
@@ -158,7 +158,7 @@ namespace HappyLife
             }
         }
 
-        [HarmonyPatch(typeof(TaiwuDomain), "GetCricketLuckPoint")]
+        [HarmonyPatch(typeof(TaiwuDomain), nameof(TaiwuDomain.GetCricketLuckPoint))]
         public class NoCricketPregnantPatch
         {
             public static void Postfix(ref int __result)
@@ -168,7 +168,7 @@ namespace HappyLife
             }
         }
 
-        [HarmonyPatch(typeof(NormalInformationCollection), "SetUsedCount")]
+        [HarmonyPatch(typeof(NormalInformationCollection), nameof(NormalInformationCollection.SetUsedCount))]
         public class SetUsedCountPatch
         {
             public static bool Prefix(ref sbyte count)
