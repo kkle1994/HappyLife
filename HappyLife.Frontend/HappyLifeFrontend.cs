@@ -17,7 +17,6 @@ namespace HappyLife.Frontend
         {
             this.HarmonyInstance.PatchAll(typeof(GetCharmLevelTextPatch));
             this.HarmonyInstance.PatchAll(typeof(IsPageDisabledPatch));
-            this.HarmonyInstance.PatchAll(typeof(IsPageShowPatch));
             this.HarmonyInstance.PatchAll(typeof(BuildingInitDataPatch));
             this.HarmonyInstance.PatchAll(typeof(UpdateHealthRecoverStatePatch));
             this.HarmonyInstance.PatchAll(typeof(BindGlobalEventsPatch));
@@ -87,7 +86,8 @@ namespace HappyLife.Frontend
                             }
                             for (var resourceIndex = 0; resourceIndex < 8; resourceIndex++)
                             {
-                                originalBlockItem.BaseBuildCost[resourceIndex] = ushort.Parse(parts[resourceIndex + 2]);
+                                if(ushort.TryParse(parts[resourceIndex + 2], out var buildCost))
+                                    originalBlockItem.BaseBuildCost[resourceIndex] = buildCost;
                             }
 
                             // Add base workload
@@ -162,37 +162,10 @@ namespace HappyLife.Frontend
             }
         }
 
-        [HarmonyPatch(typeof(UI_Shop), nameof(UI_Shop.NotifyUIShow))]
-        public class IsPageShowPatch
-        {
-            //public static void Prefix(UI_Shop __instance)
-            //{
-            //    typeof(UI_Shop).GetField("_merchantFavorability").SetValue(__instance, 5000);
-            //}
-
-            public static void Postfix(UI_Shop __instance, ref bool __result, int index)
-            {
-                if (index == 7)
-                {
-                    return;
-                }
-                if (GetBoolSettings("HighLevelShop"))
-                {
-                    var _merchantData = __instance.GetType().GetField("_merchantData", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(__instance) as MerchantData;
-
-                    __result = _merchantData.GetGoodsList(index).Items.Count != 0;
-                }
-
-            }
-        }
 
         [HarmonyPatch(typeof(UI_Shop), nameof(UI_Shop.IsPageDisabled))]
         public class IsPageDisabledPatch
         {
-            //public static void Prefix(UI_Shop __instance)
-            //{
-            //    typeof(UI_Shop).GetField("_merchantFavorability").SetValue(__instance, 5000);
-            //}
 
             public static void Postfix(UI_Shop __instance, ref bool __result, int index)
             {
