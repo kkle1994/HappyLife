@@ -18,18 +18,18 @@ namespace HappyLife
 {
     public partial class HappyLife
     {
-        [HarmonyPatch(typeof(BuildingDomain), nameof(BuildingDomain.CanBuild))]
-        public class CanBuildPatch
-        {
-            public static void Postfix(ref bool __result, short buildingTemplateId)
-            {
-                if (!GetBoolSettings("EnableBuildResource"))
-                    return;
-                BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[buildingTemplateId];
-                if (buildingBlockItem.Class == EBuildingBlockClass.BornResource)
-                    __result = true;
-            }
-        }
+        //[HarmonyPatch(typeof(BuildingDomain), nameof(BuildingDomain.CanBuild))]
+        //public class CanBuildPatch
+        //{
+        //    public static void Postfix(ref bool __result, short buildingTemplateId)
+        //    {
+        //        if (!GetBoolSettings("EnableBuildResource"))
+        //            return;
+        //        BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[buildingTemplateId];
+        //        if (buildingBlockItem.Class == EBuildingBlockClass.BornResource)
+        //            __result = true;
+        //    }
+        //}
 
         [HarmonyPatch(typeof(WorldDomain), "PreAdvanceMonth")]
         public class PreAdvanceMonthPatch
@@ -88,12 +88,12 @@ namespace HappyLife
                     ECharacterPropertyReferencedType type = ECharacterPropertyReferencedType.Strength;
                     if (bookTemplate.CombatSkillType != -1)
                     {
-                        type = (ECharacterPropertyReferencedType)(66 + bookTemplate.CombatSkillType);
+                        type = ECharacterPropertyReferencedType.QualificationNeigong + bookTemplate.CombatSkillType;
                     }
 
                     if (bookTemplate.LifeSkillType != -1)
                     {
-                        type = (ECharacterPropertyReferencedType)(34 + bookTemplate.LifeSkillType);
+                        type = ECharacterPropertyReferencedType.QualificationMusic + bookTemplate.LifeSkillType;
                     }
                     DomainManager.Taiwu.GetTaiwu().ModifyBasePropertyValue(context, type, 1);
                 }
@@ -256,7 +256,7 @@ namespace HappyLife
                     GlobalConfig.Instance.AddAttainmentPerGrade = new sbyte[] { 10, 15, 20, 25, 30, 35, 40, 45, 50 };
                 }
 
-                if (!GetBoolSettings("EnableBuildResource"))
+                //if (!GetBoolSettings("EnableBuildResource"))
                     return;
                 if (File.Exists(PatchFile))
                 {
@@ -307,24 +307,24 @@ namespace HappyLife
         {
             public unsafe static void Postfix(BuildingDomain __instance, BuildingBlockKey blockKey, ref bool __result)
             {
-                if (GetIntSettings("EnableBuildResource") != 0)
-                {
-                    BuildingBlockData element_BuildingBlocks = __instance.GetElement_BuildingBlocks(blockKey);
-                    BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[element_BuildingBlocks.TemplateId];
-                    if (element_BuildingBlocks.TemplateId >= 1 && element_BuildingBlocks.TemplateId <= 20)
-                    {
-                        GameData.Domains.Character.Character taiwu = DomainManager.Taiwu.GetTaiwu();
-                        for (sbyte b = 0; b < 8; b = (sbyte)(b + 1))
-                        {
-                            int num = buildingBlockItem.BaseBuildCost[b] * (100 + buildingBlockItem.AddBuildCostPerLevel * element_BuildingBlocks.Level) / 1000 * 10;
-                            if (taiwu.GetResource(b) < num)
-                            {
-                                __result = false;
-                            }
-                        }
-                    }
-                    __result = true;
-                }
+                //if (GetIntSettings("EnableBuildResource") != 0)
+                //{
+                //    BuildingBlockData element_BuildingBlocks = __instance.GetElement_BuildingBlocks(blockKey);
+                //    BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[element_BuildingBlocks.TemplateId];
+                //    if (element_BuildingBlocks.TemplateId >= 1 && element_BuildingBlocks.TemplateId <= 20)
+                //    {
+                //        GameData.Domains.Character.Character taiwu = DomainManager.Taiwu.GetTaiwu();
+                //        for (sbyte b = 0; b < 8; b = (sbyte)(b + 1))
+                //        {
+                //            int num = buildingBlockItem.BaseBuildCost[b] * (100 + buildingBlockItem.AddBuildCostPerLevel * element_BuildingBlocks.Level) / 1000 * 10;
+                //            if (taiwu.GetResource(b) < num)
+                //            {
+                //                __result = false;
+                //            }
+                //        }
+                //    }
+                //    __result = true;
+                //}
             }
         }
 

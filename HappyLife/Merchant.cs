@@ -26,17 +26,5 @@ namespace HappyLife
                 }
             }
         }
-
-        [HarmonyPatch(typeof(ExtraDomain), nameof(ExtraDomain.SetMerchantDebts))]
-        public class AddMerchantDebtPatch
-        {
-            public static void Postfix(DataContext context)
-            {
-                if (GetBoolSettings("HighLevelShop"))
-                {
-
-                }
-            }
-        }
     }
 }

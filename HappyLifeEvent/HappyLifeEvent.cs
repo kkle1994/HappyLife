@@ -74,7 +74,7 @@ namespace HappyLifeEvent
             }
         }
 
-        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption10VisibleCheck")]
+        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption11VisibleCheck")]
         public class OnOption10VisibleCheckPatch
         {
             public static void Postfix(ref bool __result, TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b __instance)
@@ -93,7 +93,7 @@ namespace HappyLifeEvent
             }
         }
 
-        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption15VisibleCheck")]
+        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption16VisibleCheck")]
         public class OnOption15VisibleCheckPatch
         {
             public static void Postfix(ref bool __result, TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b __instance)
@@ -114,7 +114,7 @@ namespace HappyLifeEvent
         /// <summary>
         /// 允许任意做媒
         /// </summary>
-        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption23VisibleCheck")]
+        [HarmonyPatch(typeof(TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b), "OnOption24VisibleCheck")]
         public class OnOption22VisibleCheckPatch
         {
             public static void Postfix(ref bool __result, TaiwuEvent_bad63f08115a45aa970cfa203dd85e2b __instance)

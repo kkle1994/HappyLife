@@ -1,7 +1,7 @@
 return {
 	Title = "安居乐业生育办",
 	Version = "1.0",
-	GameVersion = "0.0.71.78",
+	GameVersion = "0.0.73.49",
 	BackendPlugins = {"HappyLife.dll", "HappyLifeEvent.dll"},
 	FrontendPlugins = {"HappyLife.Frontend.dll"},
 	Author = "kkle1994@outlook.com",
@@ -45,7 +45,6 @@ return {
 		{Key="UnlimitedConfess", DisplayName="可向任何人表白", Description="可向任何人表白", SettingType="Toggle", DefaultValue=false},
 		{Key="ShowKidCharm", DisplayName="显示儿童魅力", Description="显示儿童魅力。", SettingType="Toggle", DefaultValue=false},
 		{Key="ShowMaskCharm", DisplayName="显示遮面魅力", Description="显示遮面魅力（界青衣服等）。", SettingType="Toggle", DefaultValue=false},
-		{Key="EnableBuildResource", DisplayName="建造资源(需重启)", Description="允许建造自然资源(重启生效)。", SettingType="Toggle", DefaultValue=false},
 		{Key="NoDependentBuilding", DisplayName="无视附属(需重启)", Description="建造无视附属建筑，需先开启允许建造资源！(重启生效)", SettingType="Toggle", DefaultValue=false},
 		{Key="FixConfessIssue", DisplayName="修复表白公式", Description="解除同性限制、解决太吾子女或配偶带来的减益。", SettingType="Toggle", DefaultValue=false},
 		{Key="AllowTaiwuHomoPregnant", DisplayName="太吾同性怀孕", Description="允许太吾同性怀孕。", SettingType="Toggle", DefaultValue=false},

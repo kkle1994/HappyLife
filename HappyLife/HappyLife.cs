@@ -98,7 +98,7 @@ namespace HappyLife
                     var trace = new StackTrace();
                     if (__result < 0 && GetBoolSettings("CancelMonthlyEventFavorReduce"))
                     {
-                        if (trace.GetFrames().Exist(f => f.GetMethod()!.Name == "ApplyInitialChangesForTaiwu" || f.GetMethod()!.Name == "MakeSecretInformationBroadcast"))
+                        if (trace.GetFrames().Exist(f => f.GetMethod()!.Name == "AdvanceMonth"))
                         {
                             __result = 0;
                             return;
