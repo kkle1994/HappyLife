@@ -11,7 +11,7 @@ namespace HappyLife
         {
             public static bool Prefix(ref int days)
             {
-                if (GetBoolSettings("LockDaysInMonth") && days != 30)
+                if (GetBoolSettings("LockDaysInMonth"))
                     days = 0;
                 return true;
             }

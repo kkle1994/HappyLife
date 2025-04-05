@@ -229,91 +229,102 @@ namespace HappyLife
                     info.PregnantState.CreateFatherRelation = true;
                 }
 
+                var isFatherTaiwu = info.Father?.IsTaiwu() ?? false;
+                var isMotherTaiwu = info.Mother?.IsTaiwu() ?? false;
+
                 IRandomSource random = context.Random;
-                if (GetIntSettings("TaiwuChildGender") != 0 &&
-                    ((info.Father != null && info.Father.IsTaiwu()) || (info.Mother != null && info.Mother.IsTaiwu())))
+                if (GetIntSettings("TaiwuChildGender") != 0 && (isFatherTaiwu || isMotherTaiwu))
                 {
                     if (info.CharTemplateId % 2 == 1 && GetIntSettings("TaiwuChildGender") == 2)
                     {
-                        (short baseAttraction, AvatarData avatar) tuple2 = GenerateMainChildAvatar(random, info.Mother, info.Father, info.DeadFather, 0);
-                        IntelligentCharacterCreationInfo intelligentCharacterCreationInfo = new IntelligentCharacterCreationInfo(info.Location, info.OrgInfo, (short)(info.CharTemplateId - 1));
-                        intelligentCharacterCreationInfo.GrowingSectGrade = info.GrowingSectGrade;
-                        intelligentCharacterCreationInfo.MotherCharId = info.MotherCharId;
-                        intelligentCharacterCreationInfo.Mother = info.Mother;
-                        intelligentCharacterCreationInfo.PregnantState = info.PregnantState;
-                        intelligentCharacterCreationInfo.FatherCharId = info.FatherCharId;
-                        intelligentCharacterCreationInfo.Father = info.Father;
-                        intelligentCharacterCreationInfo.DeadFather = info.DeadFather;
-                        intelligentCharacterCreationInfo.MultipleBirthCount = info.MultipleBirthCount;
-                        intelligentCharacterCreationInfo.Age = info.Age;
-                        intelligentCharacterCreationInfo.BirthMonth = info.BirthMonth;
-                        intelligentCharacterCreationInfo.BaseAttraction = info.BaseAttraction;
-                        intelligentCharacterCreationInfo.Avatar = tuple2.avatar;
-                        intelligentCharacterCreationInfo.ReincarnationCharId = info.ReincarnationCharId;
-                        intelligentCharacterCreationInfo.DestinyType = info.DestinyType;
+                        var avatarData = GenerateMainChildAvatar(random, info.Mother!, info.Father!, info.DeadFather, 0);
+                        var intelligentCharacterCreationInfo = new IntelligentCharacterCreationInfo(info.Location, info.OrgInfo, (short)(info.CharTemplateId - 1))
+                        {
+                            GrowingSectGrade = info.GrowingSectGrade,
+                            MotherCharId = info.MotherCharId,
+                            Mother = info.Mother,
+                            PregnantState = info.PregnantState,
+                            FatherCharId = info.FatherCharId,
+                            Father = info.Father,
+                            DeadFather = info.DeadFather,
+                            MultipleBirthCount = info.MultipleBirthCount,
+                            Age = info.Age,
+                            BirthMonth = info.BirthMonth,
+                            BaseAttraction = info.BaseAttraction,
+                            Avatar = avatarData.avatar,
+                            ReincarnationCharId = info.ReincarnationCharId,
+                            DestinyType = info.DestinyType
+                        };
                         info = intelligentCharacterCreationInfo;
                     }
                     else if (info.CharTemplateId % 2 == 0 && GetIntSettings("TaiwuChildGender") == 1)
                     {
-                        (short baseAttraction, AvatarData avatar) tuple2 = GenerateMainChildAvatar(random, info.Mother, info.Father, info.DeadFather, 1);
-                        IntelligentCharacterCreationInfo intelligentCharacterCreationInfo = new IntelligentCharacterCreationInfo(info.Location, info.OrgInfo, (short)(info.CharTemplateId + 1));
-                        intelligentCharacterCreationInfo.GrowingSectGrade = info.GrowingSectGrade;
-                        intelligentCharacterCreationInfo.MotherCharId = info.MotherCharId;
-                        intelligentCharacterCreationInfo.Mother = info.Mother;
-                        intelligentCharacterCreationInfo.PregnantState = info.PregnantState;
-                        intelligentCharacterCreationInfo.FatherCharId = info.FatherCharId;
-                        intelligentCharacterCreationInfo.Father = info.Father;
-                        intelligentCharacterCreationInfo.DeadFather = info.DeadFather;
-                        intelligentCharacterCreationInfo.MultipleBirthCount = info.MultipleBirthCount;
-                        intelligentCharacterCreationInfo.Age = info.Age;
-                        intelligentCharacterCreationInfo.BirthMonth = info.BirthMonth;
-                        intelligentCharacterCreationInfo.BaseAttraction = info.BaseAttraction;
-                        intelligentCharacterCreationInfo.Avatar = tuple2.avatar; ;
+                        (short baseAttraction, AvatarData avatar) avatarData = GenerateMainChildAvatar(random, info.Mother!, info.Father!, info.DeadFather, 1);
+                        var intelligentCharacterCreationInfo = new IntelligentCharacterCreationInfo(info.Location, info.OrgInfo, (short)(info.CharTemplateId + 1))
+                        {
+                            GrowingSectGrade = info.GrowingSectGrade,
+                            MotherCharId = info.MotherCharId,
+                            Mother = info.Mother,
+                            PregnantState = info.PregnantState,
+                            FatherCharId = info.FatherCharId,
+                            Father = info.Father,
+                            DeadFather = info.DeadFather,
+                            MultipleBirthCount = info.MultipleBirthCount,
+                            Age = info.Age,
+                            BirthMonth = info.BirthMonth,
+                            BaseAttraction = info.BaseAttraction,
+                            Avatar = avatarData.avatar
+                        };
+                        ;
                         intelligentCharacterCreationInfo.ReincarnationCharId = info.ReincarnationCharId;
                         intelligentCharacterCreationInfo.DestinyType = info.DestinyType;
                         info = intelligentCharacterCreationInfo;
                     }
                 }
-                else if (GetIntSettings("WorldChildGender") != 0 && !info.Father.IsTaiwu() && !info.Mother.IsTaiwu())
+                else if (GetIntSettings("WorldChildGender") != 0 && isFatherTaiwu && !isMotherTaiwu)
                 {
                     if (info.CharTemplateId % 2 == 1 && GetIntSettings("WorldChildGender") == 2)
                     {
-                        (short baseAttraction, AvatarData avatar) tuple2 = GenerateMainChildAvatar(random, info.Mother, info.Father, info.DeadFather, 0);
-                        IntelligentCharacterCreationInfo intelligentCharacterCreationInfo = new IntelligentCharacterCreationInfo(info.Location, info.OrgInfo, (short)(info.CharTemplateId - 1));
-                        intelligentCharacterCreationInfo.GrowingSectGrade = info.GrowingSectGrade;
-                        intelligentCharacterCreationInfo.MotherCharId = info.MotherCharId;
-                        intelligentCharacterCreationInfo.Mother = info.Mother;
-                        intelligentCharacterCreationInfo.PregnantState = info.PregnantState;
-                        intelligentCharacterCreationInfo.FatherCharId = info.FatherCharId;
-                        intelligentCharacterCreationInfo.Father = info.Father;
-                        intelligentCharacterCreationInfo.DeadFather = info.DeadFather;
-                        intelligentCharacterCreationInfo.MultipleBirthCount = info.MultipleBirthCount;
-                        intelligentCharacterCreationInfo.Age = info.Age;
-                        intelligentCharacterCreationInfo.BirthMonth = info.BirthMonth;
-                        intelligentCharacterCreationInfo.BaseAttraction = info.BaseAttraction;
-                        intelligentCharacterCreationInfo.Avatar = tuple2.avatar;
-                        intelligentCharacterCreationInfo.ReincarnationCharId = info.ReincarnationCharId;
-                        intelligentCharacterCreationInfo.DestinyType = info.DestinyType;
+                        var avatarData = GenerateMainChildAvatar(random, info.Mother, info.Father, info.DeadFather, 0);
+                        var intelligentCharacterCreationInfo = new IntelligentCharacterCreationInfo(info.Location, info.OrgInfo, (short)(info.CharTemplateId - 1))
+                        {
+                            GrowingSectGrade = info.GrowingSectGrade,
+                            MotherCharId = info.MotherCharId,
+                            Mother = info.Mother,
+                            PregnantState = info.PregnantState,
+                            FatherCharId = info.FatherCharId,
+                            Father = info.Father,
+                            DeadFather = info.DeadFather,
+                            MultipleBirthCount = info.MultipleBirthCount,
+                            Age = info.Age,
+                            BirthMonth = info.BirthMonth,
+                            BaseAttraction = info.BaseAttraction,
+                            Avatar = avatarData.avatar,
+                            ReincarnationCharId = info.ReincarnationCharId,
+                            DestinyType = info.DestinyType
+                        };
                         info = intelligentCharacterCreationInfo;
                     }
                     else if (info.CharTemplateId % 2 == 0 && GetIntSettings("WorldChildGender") == 1)
                     {
-                        (short baseAttraction, AvatarData avatar) tuple2 = GenerateMainChildAvatar(random, info.Mother, info.Father, info.DeadFather, 1);
-                        IntelligentCharacterCreationInfo intelligentCharacterCreationInfo = new IntelligentCharacterCreationInfo(info.Location, info.OrgInfo, (short)(info.CharTemplateId + 1));
-                        intelligentCharacterCreationInfo.GrowingSectGrade = info.GrowingSectGrade;
-                        intelligentCharacterCreationInfo.MotherCharId = info.MotherCharId;
-                        intelligentCharacterCreationInfo.Mother = info.Mother;
-                        intelligentCharacterCreationInfo.PregnantState = info.PregnantState;
-                        intelligentCharacterCreationInfo.FatherCharId = info.FatherCharId;
-                        intelligentCharacterCreationInfo.Father = info.Father;
-                        intelligentCharacterCreationInfo.DeadFather = info.DeadFather;
-                        intelligentCharacterCreationInfo.MultipleBirthCount = info.MultipleBirthCount;
-                        intelligentCharacterCreationInfo.Age = info.Age;
-                        intelligentCharacterCreationInfo.BirthMonth = info.BirthMonth;
-                        intelligentCharacterCreationInfo.BaseAttraction = info.BaseAttraction;
-                        intelligentCharacterCreationInfo.Avatar = tuple2.avatar;
-                        intelligentCharacterCreationInfo.ReincarnationCharId = info.ReincarnationCharId;
-                        intelligentCharacterCreationInfo.DestinyType = info.DestinyType;
+                        var avatarData = GenerateMainChildAvatar(random, info.Mother, info.Father, info.DeadFather, 1);
+                        var intelligentCharacterCreationInfo = new IntelligentCharacterCreationInfo(info.Location, info.OrgInfo, (short)(info.CharTemplateId + 1))
+                        {
+                            GrowingSectGrade = info.GrowingSectGrade,
+                            MotherCharId = info.MotherCharId,
+                            Mother = info.Mother,
+                            PregnantState = info.PregnantState,
+                            FatherCharId = info.FatherCharId,
+                            Father = info.Father,
+                            DeadFather = info.DeadFather,
+                            MultipleBirthCount = info.MultipleBirthCount,
+                            Age = info.Age,
+                            BirthMonth = info.BirthMonth,
+                            BaseAttraction = info.BaseAttraction,
+                            Avatar = avatarData.avatar,
+                            ReincarnationCharId = info.ReincarnationCharId,
+                            DestinyType = info.DestinyType
+                        };
                         info = intelligentCharacterCreationInfo;
                     }
                 }

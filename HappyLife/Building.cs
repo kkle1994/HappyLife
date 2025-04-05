@@ -4,6 +4,7 @@ using GameData.Domains;
 using GameData.Domains.Building;
 using GameData.Domains.Character;
 using GameData.Domains.Character.AvatarSystem;
+using GameData.Domains.Global;
 using GameData.Domains.Organization;
 using GameData.Domains.World;
 using HarmonyLib;
@@ -18,18 +19,18 @@ namespace HappyLife
 {
     public partial class HappyLife
     {
-        //[HarmonyPatch(typeof(BuildingDomain), nameof(BuildingDomain.CanBuild))]
-        //public class CanBuildPatch
-        //{
-        //    public static void Postfix(ref bool __result, short buildingTemplateId)
-        //    {
-        //        if (!GetBoolSettings("EnableBuildResource"))
-        //            return;
-        //        BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[buildingTemplateId];
-        //        if (buildingBlockItem.Class == EBuildingBlockClass.BornResource)
-        //            __result = true;
-        //    }
-        //}
+        [HarmonyPatch(typeof(BuildingDomain), nameof(BuildingDomain.CanBuild))]
+        public class CanBuildPatch
+        {
+            public static void Postfix(ref bool __result, short buildingTemplateId)
+            {
+                if (!GetBoolSettings("EnableBuildResource"))
+                    return;
+                BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[buildingTemplateId];
+                if (buildingBlockItem.Class == EBuildingBlockClass.BornResource)
+                    __result = true;
+            }
+        }
 
         [HarmonyPatch(typeof(WorldDomain), "PreAdvanceMonth")]
         public class PreAdvanceMonthPatch
@@ -245,7 +246,7 @@ namespace HappyLife
             }
         }
 
-        [HarmonyPatch(typeof(WorldDomain), "OnLoadWorld")]
+        [HarmonyPatch(typeof(GlobalDomain), nameof(GlobalDomain.OnLoadWorld))]
         public class BuildingPatch
         {
             public static string PatchFile = "..\\Mod\\HappyLife\\Datas\\BuildingDataPatch.csv";
@@ -256,7 +257,7 @@ namespace HappyLife
                     GlobalConfig.Instance.AddAttainmentPerGrade = new sbyte[] { 10, 15, 20, 25, 30, 35, 40, 45, 50 };
                 }
 
-                //if (!GetBoolSettings("EnableBuildResource"))
+                if (!GetBoolSettings("EnableBuildResource"))
                     return;
                 if (File.Exists(PatchFile))
                 {
@@ -302,29 +303,43 @@ namespace HappyLife
             }
         }
 
+        [HarmonyPatch(typeof(BuildingDomain), nameof(BuildingDomain.AllDependBuildingAvailable),
+            new Type[] { typeof(BuildingBlockKey), typeof(short), typeof(sbyte) },
+            new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out })]
+        public class AllDependBuildingAvailablePatch
+        {
+            public static void Postfix(ref bool __result)
+            {
+                if (GetBoolSettings("NoDependentBuilding"))
+                {
+                    __result = true;
+                }
+            }
+        }
+
         [HarmonyPatch(typeof(BuildingDomain), nameof(BuildingDomain.CanUpgrade))]
         public class CanUpgradePatch
         {
             public unsafe static void Postfix(BuildingDomain __instance, BuildingBlockKey blockKey, ref bool __result)
             {
-                //if (GetIntSettings("EnableBuildResource") != 0)
-                //{
-                //    BuildingBlockData element_BuildingBlocks = __instance.GetElement_BuildingBlocks(blockKey);
-                //    BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[element_BuildingBlocks.TemplateId];
-                //    if (element_BuildingBlocks.TemplateId >= 1 && element_BuildingBlocks.TemplateId <= 20)
-                //    {
-                //        GameData.Domains.Character.Character taiwu = DomainManager.Taiwu.GetTaiwu();
-                //        for (sbyte b = 0; b < 8; b = (sbyte)(b + 1))
-                //        {
-                //            int num = buildingBlockItem.BaseBuildCost[b] * (100 + buildingBlockItem.AddBuildCostPerLevel * element_BuildingBlocks.Level) / 1000 * 10;
-                //            if (taiwu.GetResource(b) < num)
-                //            {
-                //                __result = false;
-                //            }
-                //        }
-                //    }
-                //    __result = true;
-                //}
+                if (GetIntSettings("EnableBuildResource") != 0)
+                {
+                    BuildingBlockData element_BuildingBlocks = __instance.GetElement_BuildingBlocks(blockKey);
+                    BuildingBlockItem buildingBlockItem = BuildingBlock.Instance[element_BuildingBlocks.TemplateId];
+                    if (element_BuildingBlocks.TemplateId >= 1 && element_BuildingBlocks.TemplateId <= 20)
+                    {
+                        GameData.Domains.Character.Character taiwu = DomainManager.Taiwu.GetTaiwu();
+                        for (sbyte b = 0; b < 8; b = (sbyte)(b + 1))
+                        {
+                            int num = buildingBlockItem.BaseBuildCost[b] * (100 + buildingBlockItem.AddBuildCostPerLevel * element_BuildingBlocks.Level) / 1000 * 10;
+                            if (taiwu.GetResource(b) < num)
+                            {
+                                __result = false;
+                            }
+                        }
+                    }
+                    __result = true;
+                }
             }
         }
 

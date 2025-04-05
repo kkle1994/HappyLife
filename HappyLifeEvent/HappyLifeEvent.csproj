@@ -6,82 +6,82 @@
 
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\The Scroll of Taiwu_Data\Managed\0Harmony.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\The Scroll of Taiwu_Data\Managed\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="GameData">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Backend\GameData.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Backend\GameData.dll</HintPath>
     </Reference>
     <Reference Include="TaiwuModdingLib">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\The Scroll of Taiwu_Data\Managed\TaiwuModdingLib.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\The Scroll of Taiwu_Data\Managed\TaiwuModdingLib.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_CharacterInteraction_Interact">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_CharacterInteraction_Interact.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_CharacterInteraction_Interact.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_CharacterInteraction_Main">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_CharacterInteraction_Main.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_CharacterInteraction_Main.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_CharacterInteraction_RandomEnemy">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_CharacterInteraction_RandomEnemy.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_CharacterInteraction_RandomEnemy.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_CharacterInteraction_Relate">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_CharacterInteraction_Relate.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_CharacterInteraction_Relate.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MainStory_DeepValley">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MainStory_DeepValley.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MainStory_DeepValley.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryAdventure">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryAdventure.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryAdventure.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryChengDu">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryChengDu.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryChengDu.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryDaLi">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryDaLi.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryDaLi.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryFuZhou">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryFuZhou.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryFuZhou.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryGuangZhou">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryGuangZhou.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryGuangZhou.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryGuiZhou">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryGuiZhou.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryGuiZhou.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryHangZhou">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryHangZhou.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryHangZhou.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryJiangLing">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryJiangLing.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryJiangLing.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryJingCheng">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryJingCheng.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryJingCheng.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryLiaoYang">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryLiaoYang.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryLiaoYang.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryQingZhou">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryQingZhou.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryQingZhou.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryQinZhou">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryQinZhou.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryQinZhou.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryShouChun">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryShouChun.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryShouChun.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryTaiYuan">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryTaiYuan.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryTaiYuan.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryXiangYang">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryXiangYang.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryXiangYang.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_MarryYangZhou">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryYangZhou.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_MarryYangZhou.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_RoleTaiwuSelfMonthAdvanceEvents">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_RoleTaiwuSelfMonthAdvanceEvents.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_RoleTaiwuSelfMonthAdvanceEvents.dll</HintPath>
     </Reference>
     <Reference Include="Taiwu_EventPackage_SameBlockNpcMonthAdvanceEvents">
-      <HintPath>N:\Games\SteamLibrary\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_SameBlockNpcMonthAdvanceEvents.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\The Scroll Of Taiwu\Event\EventLib\Taiwu_EventPackage_SameBlockNpcMonthAdvanceEvents.dll</HintPath>
     </Reference>
   </ItemGroup>
 

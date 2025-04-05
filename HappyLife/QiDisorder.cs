@@ -13,8 +13,7 @@ namespace HappyLife
             {
                 if (GetBoolSettings("TaiwuValligerNoQiDisorder"))
                 {
-                    var villagersStatus = DomainManager.Taiwu.GetAllVillagersStatus();
-                    if (villagersStatus.Exists(v => v.CharacterId == __instance.GetId()) && DomainManager.Taiwu.GetTaiwuCharId() != __instance.GetId())
+                    if (__instance.IsTaiwuVillagers())
                     {
                         __result = short.MinValue;
                     }

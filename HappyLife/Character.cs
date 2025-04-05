@@ -27,8 +27,10 @@ namespace HappyLife
 
         public static bool IsTaiwuVillagers(this Character character)
         {
-            var villagersStatus = DomainManager.Taiwu.GetAllVillagersStatus();
-            return character != null ? villagersStatus.Exists(v => v.CharacterId == character.GetId()) : false;
+            var taiwuVillagersIdList = new List<int>();
+            DomainManager.Organization.GetElement_CivilianSettlements(DomainManager.Taiwu.GetTaiwuVillageSettlementId()).GetMembers().GetAllMembers(taiwuVillagersIdList);
+            taiwuVillagersIdList.Remove(DomainManager.Taiwu.GetTaiwuCharId());
+            return character != null ? taiwuVillagersIdList.Contains(character.GetId()) : false;
         }
 
         public static T GetValue<T>(this Character character, string fieldName, BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic)
@@ -90,8 +92,7 @@ namespace HappyLife
             {
                 if (GetBoolSettings("BanTaiwuVillagerInfected"))
                 {
-                    var villagersStatus = DomainManager.Taiwu.GetAllVillagersStatus();
-                    if (villagersStatus.Exists(v => v.CharacterId == __instance.GetId()))
+                    if (__instance.IsTaiwuVillagers())
                     {
                         __result = false;
                     }

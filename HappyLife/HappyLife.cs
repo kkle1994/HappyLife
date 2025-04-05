@@ -88,7 +88,8 @@ namespace HappyLife
             }
         }
 
-        [HarmonyPatch(typeof(CharacterDomain), "CalcFavorabilityDelta")]
+        [HarmonyPatch(typeof(CharacterDomain), nameof(CharacterDomain.CalcFavorabilityDelta),
+            new Type[] { typeof(int), typeof(int), typeof(int), typeof(short) })]
         public class CalcFavorabilityDeltaPatch
         {
             public static void Postfix(CharacterDomain __instance, int characterId, int relatedCharId, ref int __result)
@@ -112,14 +113,14 @@ namespace HappyLife
             }
         }
 
-        [HarmonyPatch(typeof(CombatDomain), nameof(CombatDomain.ReduceWeaponDurability))]
+        [HarmonyPatch(typeof(CombatDomain), nameof(CombatDomain.CostDurability))]
         public class NoWeaponDurablilityPatch
         {
-            public static bool Prefix(ref int reduceValue)
+            public static bool Prefix(ref int cost)
             {
                 var random = new Random();
                 var rate = GetIntSettings("WeaponDurabilityRate");
-                reduceValue = random.Next(1, 100) < rate ? 1 : 0;
+                cost = random.Next(1, 100) < rate ? cost : 0;
                 return true;
             }
         }

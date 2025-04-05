@@ -90,12 +90,12 @@ namespace HappyLife
                     CharacterSelectFilter item = default(CharacterSelectFilter);
                     item.SelectKey = saveKey;
                     item.FilterTemplateId = -1;
-                    item.AvailableCharacters = default(CharacterSet);
+                    item.AvailableCharactersDisplayDataList = new();
                     foreach (int item2 in DomainManager.Taiwu.GetGroupCharIds().GetCollection())
                     {
                         if (item2 != charId && item2 != DomainManager.Taiwu.GetTaiwuCharId() && DomainManager.Character.TryGetElement_Objects(item2, out var element2))
                         {
-                            item.AvailableCharacters.Add(item2);
+                            item.AvailableCharactersDisplayDataList.Add(DomainManager.Character.GetCharacterDisplayData(item2));
                         }
                     }
 

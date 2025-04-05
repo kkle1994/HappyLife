@@ -176,7 +176,7 @@ namespace HappyLifeEvent
                     sbyte roleGrade = EventHelper.GetRoleGrade(character);
                     int num = -(20 + roleGrade * 10) * 10;
                     short characterOrganizationAreaId = EventHelper.GetCharacterOrganizationAreaId(character);
-                    if (EventHelper.GetAreaSpiritualDebtByAreaId(characterOrganizationAreaId) >= -num)
+                    if (EventHelper.GetAreaSpiritualDebt(characterOrganizationAreaId) >= -num)
                     {
                         __result = "52989a8c-3c4e-41cb-9d3d-0a6a1a285d13";
                     }
